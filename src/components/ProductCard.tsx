@@ -13,11 +13,11 @@ interface ProductCardProps {
     imageUrl: string | null;
     stock: number;
   };
+  index?: number;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, index = 0 }: ProductCardProps) {
   const { items, addItem, updateQuantity } = useCart();
-
   const cartItem = items.find((i) => i.product.id === product.id);
   const quantity = cartItem?.quantity ?? 0;
   const outOfStock = product.stock === 0;
@@ -32,102 +32,101 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden flex flex-col transition-all duration-300 ease-out hover:shadow-lg hover:-translate-y-1.5">
-      <div className="relative h-48 bg-gray-100 overflow-hidden group">
-        {product.imageUrl ? (
-          <Image
-            src={product.imageUrl}
-            alt={product.name}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
-            className="object-cover transition-transform duration-300 ease-out group-hover:scale-105"
-          />
-        ) : (
-          <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-blue-50 via-blue-100 to-indigo-50">
-            <svg
-              className="w-14 h-14 text-blue-300"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.2}
-                d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-              />
-            </svg>
-          </div>
-        )}
+    <div
+      className={`fade-up flex flex-col rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl ${quantity > 0 ? "border-2" : "border-2 border-transparent"}`}
+      style={{
+        animationDelay: `${Math.min(index * 0.04, 0.5)}s`,
+        background: "#fff",
+        boxShadow: quantity > 0 ? "0 4px 20px rgba(21,88,160,0.15)" : "0 2px 8px rgba(0,0,0,0.05)",
+        borderColor: quantity > 0 ? "var(--color-blue-primary)" : "transparent",
+      }}
+    >
+      {/* Image */}
+      <div
+        className="relative overflow-hidden"
+        style={{ aspectRatio: "1", background: "linear-gradient(135deg, #f8f6f3, #f0ede8)" }}
+      >
+        <div className="absolute" style={{ top: "20px", right: "20px", bottom: "20px", left: "20px" }}>
+          {product.imageUrl ? (
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+              className="object-contain"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <svg className="w-12 h-12 opacity-20" fill="none" viewBox="0 0 24 24" stroke="#999">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+              </svg>
+            </div>
+          )}
+        </div>
+
         {outOfStock && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center backdrop-blur-[1px]">
-            <span className="bg-red-500/90 text-white px-3 py-1 rounded-full text-xs font-semibold tracking-wide">
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[1px]">
+            <span className="bg-red-500 text-white px-2.5 py-0.5 rounded-full font-bold uppercase" style={{ fontSize: "10px" }}>
               Sin stock
             </span>
           </div>
         )}
-        {!outOfStock && product.stock <= 5 && (
-          <div className="absolute top-2 right-2">
-            <span className="bg-amber-500/90 text-white px-2 py-0.5 rounded-full text-[11px] font-semibold backdrop-blur-sm">
-              Últimas {product.stock} unidades
-            </span>
+
+        {!outOfStock && quantity > 0 && (
+          <div
+            className="absolute top-2.5 right-2.5 z-10 flex items-center justify-center text-white font-black"
+            style={{ width: "26px", height: "26px", borderRadius: "50%", fontSize: "12px", background: "var(--color-blue-primary)", boxShadow: "0 2px 8px rgba(21,88,160,0.35)" }}
+          >
+            {quantity}
           </div>
         )}
       </div>
 
-      <div className="p-3 flex flex-col flex-1">
-        <h3 className="font-semibold text-gray-900 text-sm leading-tight line-clamp-2 min-h-[2.5rem]">
+      {/* Body */}
+      <div className="flex flex-col flex-1" style={{ padding: "10px 12px 12px", gap: "2px" }}>
+        <h3 className="leading-tight line-clamp-2" style={{ fontSize: "13px", fontWeight: 700, color: "var(--color-blue-dark)", minHeight: "2rem" }}>
           {product.name}
         </h3>
 
-        {product.description && (
-          <p className="text-xs text-gray-400 mt-1 line-clamp-2">
-            {product.description}
-          </p>
-        )}
-
-        <div className="mt-auto pt-2">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-lg font-bold text-blue-600">
-              ${product.price.toLocaleString("es-AR")}
-            </span>
-          </div>
-
+        <div className="mt-auto" style={{ paddingTop: "6px" }}>
           {outOfStock ? (
-            <button
-              disabled
-              className="w-full py-2 px-3 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed text-xs font-medium"
-            >
-              No disponible
+            <button disabled className="w-full rounded-lg text-xs font-bold bg-gray-100 text-gray-400 cursor-not-allowed" style={{ padding: "7px 10px" }}>
+              Sin stock
             </button>
           ) : quantity === 0 ? (
             <button
               onClick={() => addItem(cartProduct)}
-              className="w-full py-2 px-3 rounded-lg bg-blue-600 text-white hover:bg-blue-700 active:scale-[0.97] transition-all duration-200 text-xs font-medium"
+              className="w-full transition-all duration-200 active:scale-95 cursor-pointer"
+              style={{
+                background: "linear-gradient(135deg, #1558A0, #0D3F7A)",
+                color: "white",
+                border: "none",
+                borderRadius: "10px",
+                padding: "8px 14px",
+                fontSize: "12px",
+                fontWeight: 800,
+                boxShadow: "0 3px 10px rgba(21,88,160,0.25)",
+              }}
             >
-              Agregar al carrito
+              Agregar
             </button>
           ) : (
-            <div className="flex items-center justify-between bg-blue-50 rounded-lg border border-blue-200">
+            <div className="flex items-center justify-between">
               <button
                 onClick={() => updateQuantity(product.id, quantity - 1)}
-                className="px-3 py-1.5 text-blue-600 hover:bg-blue-100 rounded-l-lg transition-colors text-base font-bold"
+                className="flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+                style={{ width: "32px", height: "32px", borderRadius: "50%", border: "none", background: "#D5D1CA", color: "#1A1A1A", fontSize: "16px", fontWeight: 900, flexShrink: 0 }}
               >
                 −
               </button>
-              <span className="text-xs font-semibold text-blue-800 min-w-[2rem] text-center">
+              <span className="text-center font-black" style={{ fontSize: "14px", color: "var(--color-blue-primary)", minWidth: "28px" }}>
                 {quantity}
               </span>
               <button
-                onClick={() => {
-                  if (!atMaxStock) updateQuantity(product.id, quantity + 1);
-                }}
+                onClick={() => { if (!atMaxStock) updateQuantity(product.id, quantity + 1); }}
                 disabled={atMaxStock}
-                className={`px-3 py-1.5 rounded-r-lg transition-colors text-base font-bold ${
-                  atMaxStock
-                    ? "text-gray-300 cursor-not-allowed"
-                    : "text-blue-600 hover:bg-blue-100"
-                }`}
+                className="flex items-center justify-center transition-all active:scale-90 cursor-pointer"
+                style={{ width: "32px", height: "32px", borderRadius: "50%", border: "none", background: atMaxStock ? "#ccc" : "var(--color-blue-primary)", color: "white", fontSize: "16px", fontWeight: 900, opacity: atMaxStock ? 0.5 : 1, flexShrink: 0 }}
               >
                 +
               </button>

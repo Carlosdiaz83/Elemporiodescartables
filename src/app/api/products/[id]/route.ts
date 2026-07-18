@@ -20,6 +20,7 @@ export async function PATCH(
       ...(body.name !== undefined && { name: body.name }),
       ...(body.description !== undefined && { description: body.description }),
       ...(body.features !== undefined && { features: body.features }),
+      ...(body.category !== undefined && { category: body.category }),
       ...(body.price !== undefined && { price: body.price }),
       ...(body.imageUrl !== undefined && { imageUrl: body.imageUrl }),
       ...(body.stock !== undefined && { stock: body.stock }),

@@ -13,13 +13,14 @@ interface Product {
   name: string;
   description: string | null;
   features: string | null;
+  category: string | null;
   price: number;
   imageUrl: string | null;
   stock: number;
   status: string;
 }
 
-type Tab = "dashboard" | "importar" | "pendientes" | "productos" | "ofertas";
+type Tab = "dashboard" | "pendientes" | "productos" | "ofertas";
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -90,17 +91,16 @@ export default function AdminPage() {
       <div className="flex gap-1 bg-gray-100 rounded-xl p-1 mb-6">
         {([
           ["dashboard", "Dashboard", null],
-          ["importar", "Importar Excel", null],
-          ["pendientes", "Productos Pendientes", draftProducts.length > 0 ? draftProducts.length : null],
+          ["pendientes", "Cargar y Editar (Excel)", draftProducts.length > 0 ? draftProducts.length : null],
           ["productos", "Todos los Productos", null],
           ["ofertas", "Ofertas Destacadas", null],
         ] as const).map(([key, label, badge]) => (
           <button
             key={key}
             onClick={() => { setActiveTab(key); setEditingProductId(null); }}
-            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors relative ${
+            className={`flex-1 py-2 px-4 rounded-lg text-sm font-medium transition-colors relative cursor-pointer ${
               activeTab === key
-                ? "bg-white text-gray-900 shadow-sm"
+                ? "bg-white text-gray-900 shadow-sm font-semibold"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -158,7 +158,7 @@ export default function AdminPage() {
               </p>
               <button
                 onClick={() => setActiveTab("pendientes")}
-                className="mt-2 text-sm font-medium text-yellow-800 underline hover:text-yellow-900"
+                className="mt-2 text-sm font-medium text-yellow-800 underline hover:text-yellow-900 cursor-pointer"
               >
                 Ir a completar productos →
               </button>
@@ -176,36 +176,16 @@ export default function AdminPage() {
                 </span>
               </div>
               <p className="text-sm text-red-700">
-                Estos productos no están disponibles para compra hasta que se rep stock.
+                Estos productos no están disponibles para compra hasta que se reponga stock.
               </p>
             </div>
           )}
         </div>
       )}
 
-      {/* Importar Excel */}
-      {activeTab === "importar" && (
-        <div className="space-y-6">
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-1">
-              Importar productos desde Excel
-            </h2>
-            <p className="text-sm text-gray-500 mb-4">
-              Subí un archivo con una columna de nombres de productos. Se crearán como borradores y podrás completarlos en la pestaña "Productos Pendientes".
-            </p>
-            <ExcelUploader
-              onImportComplete={() => {
-                fetchProducts();
-                setActiveTab("pendientes");
-              }}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Productos Pendientes */}
+      {/* Cargar y Editar Excel */}
       {activeTab === "pendientes" && (
-        <div className="space-y-4">
+        <div className="space-y-6">
           {editingProductId ? (
             <ProductEditor
               product={products.find((p) => p.id === editingProductId)!}
@@ -217,47 +197,51 @@ export default function AdminPage() {
             />
           ) : (
             <>
-              <div className="flex items-center justify-between">
-                <h2 className="text-lg font-semibold text-gray-900">
-                  Productos Pendientes ({draftProducts.length})
+              {/* Sección de Carga Directa */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-1">
+                  Cargar nuevos productos desde Excel
                 </h2>
-                <button
-                  onClick={() => setActiveTab("importar")}
-                  className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                >
-                  + Importar desde Excel
-                </button>
+                <p className="text-sm text-gray-500 mb-4">
+                  Subí tu archivo Excel. El sistema extraerá los nombres de los productos y creará una caja editable para cada uno a continuación.
+                </p>
+                <ExcelUploader
+                  onImportComplete={() => {
+                    fetchProducts();
+                  }}
+                />
               </div>
 
-              {draftProducts.length === 0 ? (
-                <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-12 text-center">
-                  <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-                  </svg>
-                  <p className="text-gray-500 font-medium">No hay productos pendientes</p>
-                  <p className="text-sm text-gray-400 mt-1">
-                    Todos los productos están completos o no se importaron nuevos
-                  </p>
-                  <button
-                    onClick={() => setActiveTab("importar")}
-                    className="mt-4 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors"
-                  >
-                    Importar productos
-                  </button>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {draftProducts.map((product) => (
-                    <DraftProductCard
-                      key={product.id}
-                      product={product}
-                      onEdit={() => setEditingProductId(product.id)}
-                      onDelete={handleDelete}
-                      onRefresh={fetchProducts}
-                    />
-                  ))}
-                </div>
-              )}
+              {/* Título de la sección de Cajas Editables */}
+              <div className="border-t border-gray-200 pt-6">
+                <h2 className="text-lg font-bold text-gray-900 mb-4">
+                  Editar Productos Pendientes ({draftProducts.length})
+                </h2>
+
+                {draftProducts.length === 0 ? (
+                  <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-10 text-center">
+                    <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <p className="text-gray-500 font-medium">No hay productos pendientes para editar</p>
+                    <p className="text-sm text-gray-400 mt-1">
+                      Carga un archivo Excel arriba para comenzar a crearlos y editarlos en cajas individuales.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {draftProducts.map((product) => (
+                      <DraftProductCard
+                        key={product.id}
+                        product={product}
+                        onEdit={() => setEditingProductId(product.id)}
+                        onDelete={handleDelete}
+                        onRefresh={fetchProducts}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
             </>
           )}
         </div>

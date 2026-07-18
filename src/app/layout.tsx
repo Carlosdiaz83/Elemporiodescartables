@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
 import AuthProvider from "@/components/AuthProvider";
 import Navbar from "@/components/Navbar";
 
-const inter = Inter({
-  variable: "--font-inter",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
+  weight: ["400", "600", "700", "800", "900"],
   display: "swap",
 });
 
@@ -21,8 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${inter.variable} h-full`}>
-      <body className="min-h-full flex flex-col bg-gray-50 font-[family-name:var(--font-inter)] antialiased">
+    <html lang="es" className={`${nunito.variable} h-full`}>
+      <body className="min-h-full flex flex-col font-[family-name:var(--font-nunito)] antialiased" style={{ background: "#F0EDE8", color: "#0D3F7A" }}>
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

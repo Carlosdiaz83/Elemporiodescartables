@@ -42,6 +42,7 @@ export async function POST(request: Request) {
       name: body.name,
       description: body.description,
       features: body.features,
+      category: body.category,
       price: body.price ?? 0,
       imageUrl: body.imageUrl,
       stock: body.stock ?? 0,

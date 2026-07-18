@@ -73,6 +73,7 @@ model Product {
   name        String
   description String?
   features    String?
+  category    String?  // "bolsas" | "vasos" | "platos" | "cubiertos" | "servilletas" | "papelera" | "higiene"
   price       Float    @default(0)
   imageUrl    String?
   stock       Int      @default(0)

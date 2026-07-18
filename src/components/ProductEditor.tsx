@@ -8,11 +8,23 @@ interface Product {
   name: string;
   description: string | null;
   features: string | null;
+  category: string | null;
   price: number;
   imageUrl: string | null;
   stock: number;
   status: string;
 }
+
+const CATEGORIES = [
+  { value: "", label: "Sin categoría" },
+  { value: "bolsas", label: "Bolsas" },
+  { value: "vasos", label: "Vasos" },
+  { value: "platos", label: "Platos" },
+  { value: "cubiertos", label: "Cubiertos" },
+  { value: "servilletas", label: "Servilletas" },
+  { value: "papelera", label: "Papelera" },
+  { value: "higiene", label: "Higiene" },
+];
 
 interface ProductEditorProps {
   product: Product;
@@ -28,6 +40,7 @@ export default function ProductEditor({
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description ?? "");
   const [features, setFeatures] = useState(product.features ?? "");
+  const [category, setCategory] = useState(product.category ?? "");
   const [price, setPrice] = useState(product.price.toString());
   const [stock, setStock] = useState(product.stock.toString());
   const [imageUrl, setImageUrl] = useState(product.imageUrl ?? "");
@@ -56,6 +69,7 @@ export default function ProductEditor({
           name,
           description: description || null,
           features: features || null,
+          category: category || null,
           price: priceNum,
           stock: stockNum,
           imageUrl: imageUrl || null,
@@ -143,6 +157,23 @@ export default function ProductEditor({
                 placeholder="Ej: Material: plástico, Tamaño: 30cm..."
                 className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Categoría
+              </label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {CATEGORIES.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
