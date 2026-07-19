@@ -26,17 +26,7 @@ const CATEGORIES = [
   { value: "higiene", label: "Higiene" },
 ];
 
-interface ProductEditorProps {
-  product: Product;
-  onSaved: () => void;
-  onCancel: () => void;
-}
-
-export default function ProductEditor({
-  product,
-  onSaved,
-  onCancel,
-}: ProductEditorProps) {
+export default function ProductEditor({ product, onSaved, onCancel }: { product: Product; onSaved: () => void; onCancel: () => void }) {
   const [name, setName] = useState(product.name);
   const [description, setDescription] = useState(product.description ?? "");
   const [features, setFeatures] = useState(product.features ?? "");
@@ -50,17 +40,11 @@ export default function ProductEditor({
   async function handleSave(status: "borrador" | "activo") {
     setIsSaving(true);
     setError(null);
-
     try {
       const priceNum = parseFloat(price);
       const stockNum = parseInt(stock, 10);
-
-      if (isNaN(priceNum) || priceNum < 0) {
-        throw new Error("Ingresá un precio válido");
-      }
-      if (isNaN(stockNum) || stockNum < 0) {
-        throw new Error("Ingresá un stock válido");
-      }
+      if (isNaN(priceNum) || priceNum < 0) throw new Error("Ingresá un precio válido");
+      if (isNaN(stockNum) || stockNum < 0) throw new Error("Ingresá un stock válido");
 
       const res = await fetch(`/api/products/${product.id}`, {
         method: "PATCH",
@@ -81,7 +65,6 @@ export default function ProductEditor({
         const data = await res.json();
         throw new Error(data.error || "Error al guardar");
       }
-
       onSaved();
     } catch (err: any) {
       setError(err.message);
@@ -90,165 +73,86 @@ export default function ProductEditor({
     }
   }
 
-  const stockNum = parseInt(stock, 10) || 0;
+  const inputStyle = { border: "1px solid #E8E4DE", padding: "8px 12px", fontSize: "13px", borderRadius: "10px" };
+  const focusClass = "focus:outline-none focus:ring-2 focus:ring-blue-primary/20";
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-4 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+    <div className="rounded-xl overflow-hidden" style={{ background: "white", border: "1px solid #E8E4DE" }}>
+      <div className="flex items-center justify-between" style={{ padding: "12px 16px", background: "#f8f6f3", borderBottom: "1px solid #E8E4DE" }}>
         <div>
-          <h3 className="font-semibold text-gray-900">{product.name}</h3>
-          <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full">
-            Borrador
-          </span>
+          <h3 className="font-bold" style={{ fontSize: "14px", color: "var(--color-blue-dark)" }}>{product.name}</h3>
+          <span className="rounded-full font-bold" style={{ fontSize: "10px", padding: "2px 8px", background: "#FFF8E1", color: "#7A6010" }}>Borrador</span>
         </div>
-        <button
-          onClick={onCancel}
-          className="text-sm text-gray-500 hover:text-gray-700"
-        >
-          Cancelar
-        </button>
+        <button onClick={onCancel} style={{ fontSize: "12px", color: "#666", cursor: "pointer" }}>Cancelar</button>
       </div>
 
-      <div className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Columna izquierda: Imagen */}
+      <div className="p-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Image */}
           <div>
-            <ImageDropzone
-              currentImage={imageUrl}
-              onImageUploaded={setImageUrl}
-            />
+            <ImageDropzone currentImage={imageUrl} onImageUploaded={setImageUrl} />
           </div>
 
-          {/* Columna derecha: Datos */}
-          <div className="space-y-4">
+          {/* Fields */}
+          <div className="space-y-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Nombre
-              </label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Nombre</label>
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} className={`w-full rounded-xl ${focusClass}`} style={inputStyle} />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Descripción
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={3}
-                placeholder="Descripción del producto..."
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              />
+              <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Descripción</label>
+              <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={3} placeholder="Descripción del producto..." className={`w-full rounded-xl resize-none ${focusClass}`} style={inputStyle} />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Características
-              </label>
-              <textarea
-                value={features}
-                onChange={(e) => setFeatures(e.target.value)}
-                rows={2}
-                placeholder="Ej: Material: plástico, Tamaño: 30cm..."
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-              />
+              <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Características</label>
+              <textarea value={features} onChange={(e) => setFeatures(e.target.value)} rows={2} placeholder="Ej: Material: plástico, Tamaño: 30cm..." className={`w-full rounded-xl resize-none ${focusClass}`} style={inputStyle} />
             </div>
-
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Categoría
-              </label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
+              <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Categoría</label>
+              <select value={category} onChange={(e) => setCategory(e.target.value)} className={`w-full rounded-xl ${focusClass}`} style={inputStyle}>
                 {CATEGORIES.map((cat) => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </option>
+                  <option key={cat.value} value={cat.value}>{cat.label}</option>
                 ))}
               </select>
             </div>
-
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Precio ($)
-                </label>
-                <input
-                  type="number"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  min="0"
-                  step="0.01"
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Precio ($)</label>
+                <input type="number" value={price} onChange={(e) => setPrice(e.target.value)} min="0" step="0.01" className={`w-full rounded-xl ${focusClass}`} style={inputStyle} />
               </div>
-
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Stock
-                </label>
-                <input
-                  type="number"
-                  value={stock}
-                  onChange={(e) => setStock(e.target.value)}
-                  min="0"
-                  className={`w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    stockNum === 0
-                      ? "border-red-300 bg-red-50 text-red-700"
-                      : "border-gray-200"
-                  }`}
-                />
-                {stockNum === 0 && (
-                  <p className="text-xs text-red-600 mt-1 font-medium">
-                    Sin stock - No estará disponible para compra
-                  </p>
-                )}
-                {stockNum > 0 && stockNum <= 5 && (
-                  <p className="text-xs text-yellow-600 mt-1">
-                    Stock bajo - Mostrará alerta al cliente
-                  </p>
-                )}
+                <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Stock</label>
+                <input type="number" value={stock} onChange={(e) => setStock(e.target.value)} min="0" className={`w-full rounded-xl ${focusClass}`} style={inputStyle} />
+                {parseInt(stock) === 0 && <p style={{ fontSize: "10px", color: "#C0392B", marginTop: "2px" }}>Sin stock</p>}
               </div>
             </div>
           </div>
         </div>
 
         {error && (
-          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-            {error}
-          </div>
+          <div className="mt-3 rounded-xl p-3" style={{ background: "#FEE", border: "1px solid #f5c6c2", fontSize: "12px", color: "#C0392B" }}>{error}</div>
         )}
 
-        <div className="mt-6 flex items-center justify-end gap-3">
+        <div className="mt-4 flex items-center justify-end gap-2">
           <button
             onClick={() => handleSave("borrador")}
             disabled={isSaving}
-            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors disabled:opacity-50"
+            className="rounded-xl font-bold transition-colors cursor-pointer disabled:opacity-50"
+            style={{ padding: "8px 16px", fontSize: "12px", background: "#E8E4DE", color: "#666" }}
           >
             Guardar borrador
           </button>
           <button
             onClick={() => handleSave("activo")}
             disabled={isSaving || !imageUrl}
-            className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="rounded-xl font-bold text-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ padding: "8px 16px", fontSize: "12px", background: "#1A7A4A" }}
           >
             {isSaving ? "Guardando..." : "Publicar producto"}
           </button>
         </div>
 
-        {!imageUrl && (
-          <p className="text-xs text-gray-400 text-right mt-2">
-            Subí una foto para poder publicar el producto
-          </p>
-        )}
+        {!imageUrl && <p style={{ fontSize: "10px", color: "#999", textAlign: "right", marginTop: "6px" }}>Subí una foto para publicar</p>}
       </div>
     </div>
   );

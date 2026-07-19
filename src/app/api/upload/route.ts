@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { uploadImageToR2 } from "@/lib/cloudflare";
+import { writeFile, mkdir } from "fs/promises";
+import path from "path";
 
 export async function POST(request: Request) {
   const session = await auth();
@@ -13,39 +14,34 @@ export async function POST(request: Request) {
     const file = formData.get("file") as File | null;
 
     if (!file) {
-      return NextResponse.json(
-        { error: "No se proporcionó archivo" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "No se proporcionó archivo" }, { status: 400 });
     }
 
     const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
-        { error: "Tipo de archivo no soportado. Usá JPG, PNG, WebP o GIF" },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Tipo no soportado. Usá JPG, PNG, WebP o GIF" }, { status: 400 });
     }
 
-    const maxSize = 5 * 1024 * 1024; // 5MB
-    if (file.size > maxSize) {
-      return NextResponse.json(
-        { error: "El archivo supera los 5MB" },
-        { status: 400 }
-      );
+    if (file.size > 5 * 1024 * 1024) {
+      return NextResponse.json({ error: "El archivo supera los 5MB" }, { status: 400 });
     }
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    const url = await uploadImageToR2(buffer, file.name, file.type);
+    const uploadDir = path.join(process.cwd(), "public", "uploads");
+    await mkdir(uploadDir, { recursive: true });
 
+    const ext = file.name.split(".").pop() || "jpg";
+    const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const filePath = path.join(uploadDir, fileName);
+
+    await writeFile(filePath, buffer);
+
+    const url = `/uploads/${fileName}`;
     return NextResponse.json({ url });
   } catch (error) {
     console.error("Error uploading image:", error);
-    return NextResponse.json(
-      { error: "Error al subir la imagen" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Error al subir la imagen" }, { status: 500 });
   }
 }

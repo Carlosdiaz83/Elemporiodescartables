@@ -96,166 +96,84 @@ export default function OfferManager() {
     fetchOffers();
   }
 
+  const inputStyle = { border: "1px solid #E8E4DE", padding: "8px 12px", fontSize: "13px", borderRadius: "10px" };
+  const focusClass = "focus:outline-none focus:ring-2 focus:ring-blue-primary/20";
+
   if (loading) {
-    return <div className="text-gray-500 py-8 text-center">Cargando ofertas...</div>;
+    return <div style={{ fontSize: "13px", color: "#666", padding: "32px", textAlign: "center" }}>Cargando ofertas...</div>;
   }
 
   return (
-    <div className="space-y-6">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">Crear Oferta</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          Seleccioná un producto, seteá el precio de oferta y el texto del banner.
-        </p>
-        <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div className="space-y-5">
+      <div className="rounded-xl p-5" style={{ background: "white", border: "1px solid #E8E4DE" }}>
+        <h2 className="font-bold" style={{ fontSize: "16px", color: "var(--color-blue-dark)", marginBottom: "4px" }}>Crear Oferta</h2>
+        <p style={{ fontSize: "12px", color: "#666", marginBottom: "16px" }}>Seleccioná un producto, seteá el precio de oferta y el texto del banner.</p>
+        <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Producto</label>
-            <select
-              value={selectedProductId}
-              onChange={(e) => setSelectedProductId(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
+            <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Producto</label>
+            <select value={selectedProductId} onChange={(e) => setSelectedProductId(e.target.value)} className={`w-full rounded-xl ${focusClass}`} style={inputStyle} required>
               <option value="">Seleccionar producto...</option>
               {products.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name} — ${p.price.toLocaleString("es-AR")}
-                </option>
+                <option key={p.id} value={p.id}>{p.name} — ${p.price.toLocaleString("es-AR")}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Precio de oferta ($)</label>
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={salePrice}
-              onChange={(e) => setSalePrice(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Ej: 1500"
-              required
-            />
+            <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Precio de oferta ($)</label>
+            <input type="number" step="0.01" min="0" value={salePrice} onChange={(e) => setSalePrice(e.target.value)} className={`w-full rounded-xl ${focusClass}`} style={inputStyle} placeholder="Ej: 1500" required />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Etiqueta del banner</label>
-            <input
-              type="text"
-              value={label}
-              onChange={(e) => setLabel(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="OFERTA, 2x1, DESCUENTO..."
-            />
+            <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Etiqueta del banner</label>
+            <input type="text" value={label} onChange={(e) => setLabel(e.target.value)} className={`w-full rounded-xl ${focusClass}`} style={inputStyle} placeholder="OFERTA, 2x1, DESCUENTO..." />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Orden de aparición</label>
-            <input
-              type="number"
-              value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <label className="block font-bold mb-1" style={{ fontSize: "12px", color: "var(--color-blue-dark)" }}>Orden de aparición</label>
+            <input type="number" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)} className={`w-full rounded-xl ${focusClass}`} style={inputStyle} />
           </div>
           <div className="md:col-span-2">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Crear Oferta
-            </button>
+            <button type="submit" className="rounded-xl font-bold text-white transition-colors cursor-pointer" style={{ padding: "8px 20px", fontSize: "13px", background: "var(--color-blue-primary)" }}>Crear Oferta</button>
           </div>
         </form>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-4 border-b border-gray-100">
-          <h3 className="font-semibold text-gray-900">Ofertas Activas ({offers.filter((o) => o.active).length})</h3>
+      <div className="rounded-xl overflow-hidden" style={{ background: "white", border: "1px solid #E8E4DE" }}>
+        <div className="flex items-center justify-between" style={{ padding: "12px 16px", background: "#f8f6f3", borderBottom: "1px solid #E8E4DE" }}>
+          <h3 className="font-bold" style={{ fontSize: "14px", color: "var(--color-blue-dark)" }}>Ofertas ({offers.filter((o) => o.active).length} activas)</h3>
         </div>
         {offers.length === 0 ? (
-          <div className="p-8 text-center text-gray-400">No hay ofertas creadas</div>
+          <div className="p-10 text-center" style={{ fontSize: "13px", color: "#999" }}>No hay ofertas creadas</div>
         ) : (
-          <div className="divide-y divide-gray-100">
+          <div>
             {offers.map((offer) => (
-              <div
-                key={offer.id}
-                className={`p-4 flex items-center gap-4 ${!offer.active ? "opacity-50" : ""}`}
-              >
-                <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+              <div key={offer.id} className="flex items-center gap-3" style={{ padding: "10px 16px", borderBottom: "1px solid #f0ede8", opacity: offer.active ? 1 : 0.5 }}>
+                <div className="flex-shrink-0 rounded-lg overflow-hidden" style={{ width: "48px", height: "48px", background: "#f8f6f3" }}>
                   {offer.product.imageUrl ? (
-                    <img src={offer.product.imageUrl} alt="" className="w-full h-full object-cover" />
+                    <img src={offer.product.imageUrl} alt="" className="w-full h-full" style={{ objectFit: "contain" }} />
                   ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-300">📦</div>
+                    <div className="w-full h-full flex items-center justify-center" style={{ fontSize: "16px", opacity: 0.3 }}>📦</div>
                   )}
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium text-gray-900 text-sm">{offer.product.name}</span>
-                    <span className="text-xs bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-medium">
-                      {offer.label}
-                    </span>
-                    {!offer.active && (
-                      <span className="text-xs bg-gray-100 text-gray-500 px-2 py-0.5 rounded-full">Inactiva</span>
-                    )}
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-bold truncate" style={{ fontSize: "13px", color: "var(--color-blue-dark)" }}>{offer.product.name}</span>
+                    <span className="rounded-full font-bold text-white" style={{ fontSize: "9px", padding: "2px 6px", background: "#D4380D" }}>{offer.label}</span>
+                    {!offer.active && <span className="rounded-full font-bold" style={{ fontSize: "9px", padding: "2px 6px", background: "#f0ede8", color: "#999" }}>Inactiva</span>}
                   </div>
-                  <div className="flex items-center gap-2 text-sm mt-0.5">
-                    <span className="text-gray-400 line-through">
-                      ${offer.product.price.toLocaleString("es-AR")}
-                    </span>
-                    <span className="text-red-500 font-bold">
-                      ${offer.salePrice.toLocaleString("es-AR")}
-                    </span>
-                    <span className="text-gray-400 text-xs">· Orden: {offer.sortOrder}</span>
+                  <div className="flex items-center gap-2" style={{ fontSize: "12px", marginTop: "2px" }}>
+                    <span style={{ color: "#999", textDecoration: "line-through" }}>${offer.product.price.toLocaleString("es-AR")}</span>
+                    <span className="font-bold" style={{ color: "#D4380D" }}>${offer.salePrice.toLocaleString("es-AR")}</span>
+                    <span style={{ fontSize: "10px", color: "#999" }}>· {offer.sortOrder}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-1 flex-shrink-0">
-                  <button
-                    onClick={() => handleMoveUp(offer)}
-                    className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors"
-                    title="Subir"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                    </svg>
+                  <button onClick={() => handleMoveUp(offer)} style={{ padding: "4px", fontSize: "12px", color: "#999", cursor: "pointer" }} title="Subir">▲</button>
+                  <button onClick={() => handleMoveDown(offer)} style={{ padding: "4px", fontSize: "12px", color: "#999", cursor: "pointer" }} title="Bajar">▼</button>
+                  <button onClick={() => handleToggle(offer)} style={{ padding: "4px", fontSize: "12px", color: offer.active ? "#1A7A4A" : "#999", cursor: "pointer" }} title={offer.active ? "Desactivar" : "Activar"}>
+                    {offer.active ? "◉" : "○"}
                   </button>
-                  <button
-                    onClick={() => handleMoveDown(offer)}
-                    className="p-1.5 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors"
-                    title="Bajar"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => handleToggle(offer)}
-                    className={`p-1.5 rounded transition-colors ${
-                      offer.active
-                        ? "text-green-500 hover:text-green-700 hover:bg-green-50"
-                        : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
-                    }`}
-                    title={offer.active ? "Desactivar" : "Activar"}
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      {offer.active ? (
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      ) : (
-                        <>
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                        </>
-                      )}
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => handleDelete(offer.id)}
-                    className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
-                    title="Eliminar"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                    </svg>
-                  </button>
+                  <button onClick={() => handleDelete(offer.id)} style={{ padding: "4px", fontSize: "12px", color: "#C0392B", cursor: "pointer" }} title="Eliminar">✕</button>
                 </div>
               </div>
             ))}
