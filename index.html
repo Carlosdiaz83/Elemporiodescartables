@@ -426,23 +426,24 @@
             <ul class="nav-menu">
                 <li><a href="index.html" class="active">INICIO</a></li>
 
-                <li class="dropdown">
-                    <a href="#catalogo">PRODUCTOS <i class="fas fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#catalogo">Bolsas</a></li>
-                        <li><a href="#catalogo">Moldes</a></li>
-                        <li><a href="#catalogo">Cajas</a></li>
-                        <li><a href="#catalogo">Bandejas</a></li>
-                        <li><a href="#catalogo">Vasos</a></li>
-                        <li><a href="#catalogo">Librería</a></li>
-                        <li><a href="#catalogo">Tapas</a></li>
-                        <li><a href="#catalogo">Bobinas</a></li>
-                        <li><a href="#catalogo">Platos</a></li>
-                        <li><a href="#catalogo">Utensilios</a></li>
-                        <li><a href="#catalogo">Cintas</a></li>
-                        <li><a href="#catalogo">Rollos</a></li>
-                        <li><a href="#catalogo">Estuches</a></li>
-                        <li><a href="#catalogo">Servilletas</a></li>
+                <li class="dropdown" id="nav-productos">
+                    <a href="#catalogo" id="nav-productos-btn">PRODUCTOS <i class="fas fa-chevron-down" id="nav-chevron"></i></a>
+                    <ul class="dropdown-menu" id="dropdown-productos">
+                        <li><a href="#catalogo" class="cat-link" data-cat="Todos"><i class="fas fa-th"></i> Todos los productos</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Bolsas"><i class="fas fa-shopping-bag"></i> Bolsas</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Moldes"><i class="fas fa-shapes"></i> Moldes</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Cajas"><i class="fas fa-box"></i> Cajas</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Bandejas"><i class="fas fa-layer-group"></i> Bandejas</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Vasos"><i class="fas fa-glass-martini"></i> Vasos</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Librería"><i class="fas fa-book"></i> Librería</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Tapas"><i class="fas fa-circle"></i> Tapas</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Bobinas"><i class="fas fa-scroll"></i> Bobinas</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Platos"><i class="fas fa-utensils"></i> Platos</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Utensilios"><i class="fas fa-spoon"></i> Utensilios</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Cintas"><i class="fas fa-tape"></i> Cintas</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Rollos"><i class="fas fa-toilet-paper"></i> Rollos</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Estuches"><i class="fas fa-briefcase"></i> Estuches</a></li>
+                        <li><a href="#catalogo" class="cat-link" data-cat="Servilletas"><i class="fas fa-scroll"></i> Servilletas</a></li>
                     </ul>
                 </li>
 
@@ -609,7 +610,7 @@
                         <div class="ico"><i class="fas fa-clock"></i></div>
                         <div class="detail">
                             <strong>Horario de atención</strong>
-                            <span>Lunes a Viernes de 8:00 a 18:00 hs</span>
+                            <span>Lunes a Viernes: 9:00 a 15:00 hs y 17:00 a 21:00 hs</span>
                         </div>
                     </div>
 
@@ -706,8 +707,8 @@
     <script src="js/productos.js"></script>
     <script src="js/main.js"></script>
 
-    <!-- Formulario de contacto inline -->
     <script>
+        // ---- Formulario de contacto ----
         document.getElementById('form-contacto').addEventListener('submit', function(e) {
             e.preventDefault();
             const name = document.getElementById('contact-name').value.trim();
@@ -720,6 +721,96 @@
             mostrarToast('✅ ¡Mensaje enviado! Te responderemos pronto.', 'success');
             this.reset();
         });
+
+        // ---- Dropdown PRODUCTOS con JS (fix click) ----
+        (function() {
+            const nav     = document.getElementById('nav-productos');
+            const btn     = document.getElementById('nav-productos-btn');
+            const menu    = document.getElementById('dropdown-productos');
+            const chevron = document.getElementById('nav-chevron');
+            let open = false;
+
+            function openMenu() {
+                open = true;
+                menu.classList.add('js-open');
+                chevron.style.transform = 'rotate(180deg)';
+            }
+            function closeMenu() {
+                open = false;
+                menu.classList.remove('js-open');
+                chevron.style.transform = 'rotate(0deg)';
+            }
+
+            // Abrir al hacer hover en el li (desktop)
+            nav.addEventListener('mouseenter', openMenu);
+            nav.addEventListener('mouseleave', closeMenu);
+
+            // Toggle al hacer clic en el botón (mobile / teclado)
+            btn.addEventListener('click', function(e) {
+                // Solo prevenimos default si el menú no estaba abierto (para no interferir con el anchor)
+                if (!open) { e.preventDefault(); openMenu(); }
+            });
+
+            // Links de categoría
+            document.querySelectorAll('.cat-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const cat = this.dataset.cat;
+                    closeMenu();
+
+                    // Scroll suave al catálogo
+                    const catalogo = document.getElementById('catalogo');
+                    if (catalogo) catalogo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    // Filtrar productos
+                    setTimeout(() => filtrarPorCategoria(cat), 400);
+                });
+            });
+
+            // Cerrar al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!nav.contains(e.target)) closeMenu();
+            });
+        })();
+
+        // ---- Filtrado de categorías ----
+        let categoriaActiva = 'Todos';
+
+        function filtrarPorCategoria(cat) {
+            categoriaActiva = cat;
+            const cards = document.querySelectorAll('#products-grid .product-card');
+
+            if (!cards.length) {
+                // Los productos aún no se renderizaron, esperamos y reintentamos
+                setTimeout(() => filtrarPorCategoria(cat), 300);
+                return;
+            }
+
+            // Actualizar badge de categoría activa
+            const titulo = document.querySelector('#catalogo .section-title');
+            if (titulo) {
+                titulo.textContent = cat === 'Todos' ? 'Nuestros Productos' : cat;
+            }
+
+            cards.forEach(card => {
+                const catCard = card.querySelector('.category')?.textContent.trim();
+                const visible = cat === 'Todos' || catCard === cat;
+                card.style.display = visible ? '' : 'none';
+            });
+
+            // Mostrar mensaje si no hay productos
+            const grid = document.getElementById('products-grid');
+            const visibles = [...cards].filter(c => c.style.display !== 'none');
+            const existing = document.getElementById('no-products-msg');
+            if (existing) existing.remove();
+            if (!visibles.length) {
+                const msg = document.createElement('div');
+                msg.id = 'no-products-msg';
+                msg.style.cssText = 'grid-column:1/-1;text-align:center;color:var(--text-muted);padding:40px 20px;';
+                msg.innerHTML = `<i class="fas fa-box-open" style="font-size:40px;margin-bottom:12px;display:block;opacity:.4"></i>Próximamente productos de <strong>${cat}</strong>`;
+                grid.appendChild(msg);
+            }
+        }
     </script>
 </body>
 </html>
