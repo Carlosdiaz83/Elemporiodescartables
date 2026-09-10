@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - El Emporio Descartables</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #283593 100%);
+            color: var(--bg-white);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .products-page {
+            padding: 60px 0;
+            background: var(--bg-light);
+        }
+        
+        .products-container {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 30px;
+        }
+        
+        .sidebar {
+            background: var(--bg-white);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+        
+        .sidebar h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+        
+        .filter-group {
+            margin-bottom: 25px;
+        }
+        
+        .filter-group h4 {
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+        
+        .filter-group ul li {
+            margin-bottom: 10px;
+        }
+        
+        .filter-group ul li a {
+            color: var(--text-light);
+            transition: color 0.3s;
+        }
+        
+        .filter-group ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .filter-group ul li a.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .price-range {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .price-range input {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+        }
+        
+        .filter-btn {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary-color);
+            color: var(--bg-white);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .filter-btn:hover {
+            background: var(--secondary-color);
+        }
+        
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: var(--bg-white);
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+        
+        .results-count {
+            color: var(--text-light);
+        }
+        
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sort-options label {
+            color: var(--text-color);
+        }
+        
+        .sort-options select {
+            padding: 8px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        
+        .product-card {
+            background: var(--bg-white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            position: relative;
+            padding: 20px;
+            background: var(--bg-white);
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--secondary-color);
+            color: var(--bg-white);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .product-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s;
+        }
+        
+        .product-card:hover .product-actions {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .product-actions .action-btn {
+            width: 35px;
+            height: 35px;
+            background: var(--bg-white);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            transition: background 0.3s, color 0.3s;
+        }
+        
+        .product-actions .action-btn:hover {
+            background: var(--primary-color);
+            color: var(--bg-white);
+        }
+        
+        .product-info {
+            padding: 15px 20px 20px;
+        }
+        
+        .product-info .category {
+            display: block;
+            color: var(--text-light);
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .product-info h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+        
+        .product-info .price {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+        
+        .product-info .btn {
+            display: block;
+            text-align: center;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+        
+        .pagination a {
+            padding: 10px 15px;
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            color: var(--text-color);
+            transition: all 0.3s;
+        }
+        
+        .pagination a:hover,
+        .pagination a.active {
+            background: var(--primary-color);
+            color: var(--bg-white);
+            border-color: var(--primary-color);
+        }
+        
+        @media (max-width: 992px) {
+            .products-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .products-header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span><i class="fas fa-phone"></i> +54 9 351 123-4567</span>
+                        <span><i class="fas fa-envelope"></i> info@elmporiodescartables.com</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-main">
+            <div class="container">
+                <div class="header-main-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <img src="../img/logo.png" alt="El Emporio Descartables">
+                        </a>
+                    </div>
+                    
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar productos...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-heart"></i>
+                            <span class="count">0</span>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="count">0</span>
+                        </a>
+                        <a href="login.html" class="action-btn">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <div class="container">
+                <div class="nav-content">
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <ul class="nav-menu">
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li class="dropdown">
+                            <a href="#">Categorías <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="categorias.html">Bolsas</a></li>
+                                <li><a href="categorias.html">Moldes</a></li>
+                                <li><a href="categorias.html">Cajas</a></li>
+                                <li><a href="categorias.html">Bandejas</a></li>
+                                <li><a href="categorias.html">Vasos</a></li>
+                                <li><a href="categorias.html">Platos</a></li>
+                                <li><a href="categorias.html">Utensilios</a></li>
+                                <li><a href="categorias.html">Cintas</a></li>
+                                <li><a href="categorias.html">Rollos</a></li>
+                                <li><a href="categorias.html">Servilletas</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="productos.html" class="active">Productos</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                    
+                    <div class="nav-right">
+                        <a href="login.html" class="login-btn">
+                            <i class="fas fa-user"></i> Iniciar sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Nuestros Productos</h1>
+            <p>Encontrá todo lo que necesitás para tu negocio</p>
+        </div>
+    </section>
+
+    <!-- Products Page -->
+    <section class="products-page">
+        <div class="container">
+            <div class="products-container">
+                <!-- Sidebar -->
+                <aside class="sidebar">
+                    <h3>Filtros</h3>
+                    
+                    <div class="filter-group">
+                        <h4>Categorías</h4>
+                        <ul>
+                            <li><a href="#" class="active">Todos</a></li>
+                            <li><a href="#">Bolsas</a></li>
+                            <li><a href="#">Cajas</a></li>
+                            <li><a href="#">Bandejas</a></li>
+                            <li><a href="#">Vasos</a></li>
+                            <li><a href="#">Platos</a></li>
+                            <li><a href="#">Utensilios</a></li>
+                            <li><a href="#">Cintas</a></li>
+                            <li><a href="#">Rollos</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4>Precio</h4>
+                        <div class="price-range">
+                            <input type="number" placeholder="Mínimo">
+                            <span>-</span>
+                            <input type="number" placeholder="Máximo">
+                        </div>
+                        <button class="filter-btn">Aplicar</button>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <h4>Marca</h4>
+                        <ul>
+                            <li><a href="#">Terlizzi</a></li>
+                            <li><a href="#">Medoro</a></li>
+                            <li><a href="#">Eco</a></li>
+                            <li><a href="#">Genérico</a></li>
+                        </ul>
+                    </div>
+                </aside>
+                
+                <!-- Products -->
+                <div class="products-main">
+                    <div class="products-header">
+                        <span class="results-count">Mostrando 1-12 de 48 productos</span>
+                        <div class="sort-options">
+                            <label for="sort">Ordenar por:</label>
+                            <select id="sort">
+                                <option value="default">Destacados</option>
+                                <option value="price-asc">Precio: Menor a Mayor</option>
+                                <option value="price-desc">Precio: Mayor a Menor</option>
+                                <option value="name">Nombre: A-Z</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="products-grid">
+                        <!-- Product 1 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Bolsas+Kraft" alt="Bolsas Kraft">
+                                <span class="product-badge">Nuevo</span>
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Bolsas</span>
+                                <h3>Bolsas Kraft 30x40</h3>
+                                <span class="price">$15.000</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 2 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Cajas+Pizza" alt="Cajas Pizza">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Cajas</span>
+                                <h3>Cajas para Pizza</h3>
+                                <span class="price">$8.500</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 3 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Vasos+Cristal" alt="Vasos Cristal">
+                                <span class="product-badge">Oferta</span>
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Vasos</span>
+                                <h3>Vasos de Cristal 250ml</h3>
+                                <span class="price">$12.000</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 4 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Platos+Blancos" alt="Platos Blancos">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Platos</span>
+                                <h3>Platos Blancos Descartables</h3>
+                                <span class="price">$9.800</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 5 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Bandejas+Aluminio" alt="Bandejas Aluminio">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Bandejas</span>
+                                <h3>Bandejas de Aluminio</h3>
+                                <span class="price">$7.500</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 6 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Cintas+Embalaje" alt="Cintas Embalaje">
+                                <span class="product-badge">Nuevo</span>
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Cintas</span>
+                                <h3>Cintas de Embalaje</h3>
+                                <span class="price">$3.200</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 7 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Servilletas" alt="Servilletas">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Servilletas</span>
+                                <h3>Servilletas de Papel</h3>
+                                <span class="price">$2.800</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 8 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Utensilios" alt="Utensilios">
+                                <span class="product-badge">Oferta</span>
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Utensilios</span>
+                                <h3>Cubiertos Descartables</h3>
+                                <span class="price">$4.500</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 9 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Rollos+Film" alt="Rollos Film">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Rollos</span>
+                                <h3>Rollos de Film</h3>
+                                <span class="price">$5.600</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 10 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Moldes+Horno" alt="Moldes Horno">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Moldes</span>
+                                <h3>Moldes para Horno</h3>
+                                <span class="price">$6.300</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 11 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Bobinas+Papel" alt="Bobinas Papel">
+                                <span class="product-badge">Nuevo</span>
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Bobinas</span>
+                                <h3>Bobinas de Papel</h3>
+                                <span class="price">$8.900</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Product 12 -->
+                        <div class="product-card">
+                            <div class="product-image">
+                                <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Estuches+Huevos" alt="Estuches Huevos">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="far fa-heart"></i></button>
+                                    <button class="action-btn"><i class="far fa-eye"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <span class="category">Estuches</span>
+                                <h3>Estuches para Huevos</h3>
+                                <span class="price">$4.200</span>
+                                <a href="producto.html" class="btn">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pagination">
+                        <a href="#" class="active">1</a>
+                        <a href="#">2</a>
+                        <a href="#">3</a>
+                        <a href="#">4</a>
+                        <a href="#"><i class="fas fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>El Emporio Descartables</h3>
+                    <p>Venta por mayor de artículos descartables para revendedores y negocios de distribución.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Categorías</h3>
+                    <ul>
+                        <li><a href="categorias.html">Bolsas</a></li>
+                        <li><a href="categorias.html">Cajas</a></li>
+                        <li><a href="categorias.html">Bandejas</a></li>
+                        <li><a href="categorias.html">Vasos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contacto</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> +54 9 351 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@elmporiodescartables.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Córdoba, Argentina</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 EL EMPORIO DESCARTABLES. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+        
+        // Filter functionality
+        document.querySelector('.filter-btn').addEventListener('click', function() {
+            alert('Filtros aplicados');
+        });
+        
+        // Sort functionality
+        document.getElementById('sort').addEventListener('change', function() {
+            alert('Ordenando productos: ' + this.options[this.selectedIndex].text);
+        });
+    </script>
+</body>
+</html>

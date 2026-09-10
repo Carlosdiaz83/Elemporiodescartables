@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías - El Emporio Descartables</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #283593 100%);
+            color: var(--bg-white);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .categories-page {
+            padding: 60px 0;
+            background: var(--bg-light);
+        }
+        
+        .categories-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        .category-card {
+            background: var(--bg-white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-image {
+            height: 200px;
+            background: var(--bg-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 80px;
+            color: var(--primary-color);
+        }
+        
+        .category-info {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .category-info h3 {
+            color: var(--text-color);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        .category-info p {
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .category-info .btn {
+            display: inline-block;
+        }
+        
+        @media (max-width: 992px) {
+            .categories-container {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .categories-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .categories-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span><i class="fas fa-phone"></i> +54 9 351 123-4567</span>
+                        <span><i class="fas fa-envelope"></i> info@elmporiodescartables.com</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-main">
+            <div class="container">
+                <div class="header-main-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <img src="../img/logo.png" alt="El Emporio Descartables">
+                        </a>
+                    </div>
+                    
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar productos...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-heart"></i>
+                            <span class="count">0</span>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="count">0</span>
+                        </a>
+                        <a href="login.html" class="action-btn">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <div class="container">
+                <div class="nav-content">
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <ul class="nav-menu">
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="active">Categorías <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="categorias.html">Bolsas</a></li>
+                                <li><a href="categorias.html">Moldes</a></li>
+                                <li><a href="categorias.html">Cajas</a></li>
+                                <li><a href="categorias.html">Bandejas</a></li>
+                                <li><a href="categorias.html">Vasos</a></li>
+                                <li><a href="categorias.html">Platos</a></li>
+                                <li><a href="categorias.html">Utensilios</a></li>
+                                <li><a href="categorias.html">Cintas</a></li>
+                                <li><a href="categorias.html">Rollos</a></li>
+                                <li><a href="categorias.html">Servilletas</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                    
+                    <div class="nav-right">
+                        <a href="login.html" class="login-btn">
+                            <i class="fas fa-user"></i> Iniciar sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Nuestras Categorías</h1>
+            <p>Explorá todos los productos que tenemos para vos</p>
+        </div>
+    </section>
+
+    <!-- Categories Page -->
+    <section class="categories-page">
+        <div class="container">
+            <div class="categories-container">
+                <!-- Category 1 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-shopping-bag"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Bolsas</h3>
+                        <p>Bolsas de todos tipos y tamaños para tu negocio</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 2 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Cajas</h3>
+                        <p>Cajas para pizzas, empanadas y más</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 3 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-plate-wheat"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Bandejas</h3>
+                        <p>Bandejas de aluminio, cartón y más</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 4 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-wine-glass"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Vasos</h3>
+                        <p>Vasos de cristal, plástico y más</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 5 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Platos</h3>
+                        <p>Platos descartables de todos los tamaños</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 6 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-cookie"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Moldes</h3>
+                        <p>Moldes para horno, budines y más</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 7 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-fork"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Utensilios</h3>
+                        <p>Cubiertos y utensilios descartables</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 8 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-tape"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Cintas</h3>
+                        <p>Cintas de embalaje y más</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 9 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-toilet-paper"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Servilletas</h3>
+                        <p>Servilletas de papel para toda ocasión</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 10 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-scroll"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Rollos</h3>
+                        <p>Rollos de film, papel y más</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 11 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-circle"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Bobinas</h3>
+                        <p>Bobinas de papel y otros materiales</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+                
+                <!-- Category 12 -->
+                <div class="category-card">
+                    <div class="category-image">
+                        <i class="fas fa-archive"></i>
+                    </div>
+                    <div class="category-info">
+                        <h3>Estuches</h3>
+                        <p>Estuches para huevos y otros productos</p>
+                        <a href="productos.html" class="btn">Ver Productos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>El Emporio Descartables</h3>
+                    <p>Venta por mayor de artículos descartables para revendedores y negocios de distribución.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Categorías</h3>
+                    <ul>
+                        <li><a href="categorias.html">Bolsas</a></li>
+                        <li><a href="categorias.html">Cajas</a></li>
+                        <li><a href="categorias.html">Bandejas</a></li>
+                        <li><a href="categorias.html">Vasos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contacto</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> +54 9 351 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@elmporiodescartables.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Córdoba, Argentina</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 EL EMPORIO DESCARTABLES. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

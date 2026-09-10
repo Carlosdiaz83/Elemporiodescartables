@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto - El Emporio Descartables</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #283593 100%);
+            color: var(--bg-white);
+            padding: 60px 0;
+            text-align: center;
+        }
+        
+        .page-header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .product-page {
+            padding: 60px 0;
+            background: var(--bg-light);
+        }
+        
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .product-gallery {
+            background: var(--bg-white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .main-image {
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-light);
+        }
+        
+        .main-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .thumbnail-gallery {
+            display: flex;
+            gap: 10px;
+            padding: 15px;
+            background: var(--bg-white);
+        }
+        
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            cursor: pointer;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+        
+        .thumbnail:hover,
+        .thumbnail.active {
+            border-color: var(--primary-color);
+        }
+        
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-details {
+            padding: 20px;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: var(--primary-color);
+            color: var(--bg-white);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .product-details h1 {
+            color: var(--text-color);
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+        
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stars {
+            color: #ffc107;
+            font-size: 18px;
+        }
+        
+        .rating-count {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .product-price {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .product-description {
+            color: var(--text-color);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        
+        .product-options {
+            margin-bottom: 30px;
+        }
+        
+        .option-group {
+            margin-bottom: 20px;
+        }
+        
+        .option-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .option-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .option-btn {
+            padding: 10px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-white);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-btn:hover,
+        .option-btn.active {
+            border-color: var(--primary-color);
+            background: var(--primary-color);
+            color: var(--bg-white);
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .quantity-selector label {
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--bg-light);
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s;
+        }
+        
+        .quantity-btn:hover {
+            background: var(--primary-color);
+            color: var(--bg-white);
+        }
+        
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            border: none;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .add-to-cart-btn {
+            flex: 1;
+            padding: 15px;
+            background: var(--primary-color);
+            color: var(--bg-white);
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .add-to-cart-btn:hover {
+            background: var(--secondary-color);
+        }
+        
+        .wishlist-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--border-color);
+            border-radius: 5px;
+            background: var(--bg-white);
+            cursor: pointer;
+            font-size: 20px;
+            color: var(--text-color);
+            transition: all 0.3s;
+        }
+        
+        .wishlist-btn:hover {
+            border-color: #e91e63;
+            color: #e91e63;
+        }
+        
+        .product-meta {
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+        
+        .meta-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .meta-label {
+            color: var(--text-light);
+            width: 120px;
+        }
+        
+        .meta-value {
+            color: var(--text-color);
+        }
+        
+        .related-products {
+            margin-top: 60px;
+        }
+        
+        .related-products h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            font-size: 32px;
+        }
+        
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        @media (max-width: 992px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .related-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .wishlist-btn {
+                width: 100%;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="container">
+                <div class="header-top-content">
+                    <div class="contact-info">
+                        <span><i class="fas fa-phone"></i> +54 9 351 123-4567</span>
+                        <span><i class="fas fa-envelope"></i> info@elmporiodescartables.com</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="header-main">
+            <div class="container">
+                <div class="header-main-content">
+                    <div class="logo">
+                        <a href="../index.html">
+                            <img src="../img/logo.png" alt="El Emporio Descartables">
+                        </a>
+                    </div>
+                    
+                    <div class="search-bar">
+                        <input type="text" placeholder="Buscar productos...">
+                        <button type="submit"><i class="fas fa-search"></i></button>
+                    </div>
+                    
+                    <div class="header-actions">
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-heart"></i>
+                            <span class="count">0</span>
+                        </a>
+                        <a href="#" class="action-btn">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="count">0</span>
+                        </a>
+                        <a href="login.html" class="action-btn">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <nav class="main-nav">
+            <div class="container">
+                <div class="nav-content">
+                    <button class="mobile-menu-btn">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    
+                    <ul class="nav-menu">
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li class="dropdown">
+                            <a href="#">Categorías <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="categorias.html">Bolsas</a></li>
+                                <li><a href="categorias.html">Moldes</a></li>
+                                <li><a href="categorias.html">Cajas</a></li>
+                                <li><a href="categorias.html">Bandejas</a></li>
+                                <li><a href="categorias.html">Vasos</a></li>
+                                <li><a href="categorias.html">Platos</a></li>
+                                <li><a href="categorias.html">Utensilios</a></li>
+                                <li><a href="categorias.html">Cintas</a></li>
+                                <li><a href="categorias.html">Rollos</a></li>
+                                <li><a href="categorias.html">Servilletas</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                    
+                    <div class="nav-right">
+                        <a href="login.html" class="login-btn">
+                            <i class="fas fa-user"></i> Iniciar sesión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Detalle del Producto</h1>
+            <p>Conocé todas las características de este producto</p>
+        </div>
+    </section>
+
+    <!-- Product Page -->
+    <section class="product-page">
+        <div class="container">
+            <div class="product-container">
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img src="https://via.placeholder.com/600x400/ffffff/000000?text=Bolsas+Kraft" alt="Bolsas Kraft">
+                    </div>
+                    <div class="thumbnail-gallery">
+                        <div class="thumbnail active">
+                            <img src="https://via.placeholder.com/80x80/ffffff/000000?text=1" alt="Thumbnail 1">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://via.placeholder.com/80x80/ffffff/000000?text=2" alt="Thumbnail 2">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://via.placeholder.com/80x80/ffffff/000000?text=3" alt="Thumbnail 3">
+                        </div>
+                        <div class="thumbnail">
+                            <img src="https://via.placeholder.com/80x80/ffffff/000000?text=4" alt="Thumbnail 4">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-details">
+                    <span class="product-category">Bolsas</span>
+                    <h1>Bolsas Kraft 30x40</h1>
+                    
+                    <div class="product-rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="rating-count">(25 opiniones)</span>
+                    </div>
+                    
+                    <div class="product-price">$15.000</div>
+                    
+                    <p class="product-description">
+                        Bolsas de papel kraft de alta calidad, ideales para panaderías, rotiserías y negocios de comida. 
+                        Resistentes y ecológicas, perfectas para transportar alimentos de manera segura.
+                    </p>
+                    
+                    <div class="product-options">
+                        <div class="option-group">
+                            <label>Medida:</label>
+                            <div class="option-buttons">
+                                <button class="option-btn active">30x40</button>
+                                <button class="option-btn">25x35</button>
+                                <button class="option-btn">35x45</button>
+                            </div>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label>Color:</label>
+                            <div class="option-buttons">
+                                <button class="option-btn active">Natural</button>
+                                <button class="option-btn">Blanco</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <label>Cantidad:</label>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" id="decrease">-</button>
+                            <input type="number" class="quantity-input" value="1" min="1" id="quantity">
+                            <button class="quantity-btn" id="increase">+</button>
+                        </div>
+                        <span>unidades</span>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="add-to-cart-btn">
+                            <i class="fas fa-shopping-cart"></i> Agregar al Carrito
+                        </button>
+                        <button class="wishlist-btn">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="product-meta">
+                        <div class="meta-item">
+                            <span class="meta-label">SKU:</span>
+                            <span class="meta-value">BK-3040</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Categoría:</span>
+                            <span class="meta-value">Bolsas</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label">Etiquetas:</span>
+                            <span class="meta-value">bolsas, kraft, papel, descartable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="related-products">
+                <h2>Productos Relacionados</h2>
+                <div class="related-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Bolsas+Plastico" alt="Bolsas Plástico">
+                            <div class="product-actions">
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                                <button class="action-btn"><i class="far fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="category">Bolsas</span>
+                            <h3>Bolsas de Plástico</h3>
+                            <span class="price">$8.500</span>
+                            <a href="producto.html" class="btn">Ver</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Bolsas+Freezer" alt="Bolsas Freezer">
+                            <div class="product-actions">
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                                <button class="action-btn"><i class="far fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="category">Bolsas</span>
+                            <h3>Bolsas para Freezer</h3>
+                            <span class="price">$6.200</span>
+                            <a href="producto.html" class="btn">Ver</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Bolsas+Ziploc" alt="Bolsas Ziploc">
+                            <div class="product-actions">
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                                <button class="action-btn"><i class="far fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="category">Bolsas</span>
+                            <h3>Bolsas Ziploc</h3>
+                            <span class="price">$9.800</span>
+                            <a href="producto.html" class="btn">Ver</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <img src="https://via.placeholder.com/300x300/ffffff/000000?text=Bolsas+Deli" alt="Bolsas Deli">
+                            <div class="product-actions">
+                                <button class="action-btn"><i class="far fa-heart"></i></button>
+                                <button class="action-btn"><i class="far fa-eye"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <span class="category">Bolsas</span>
+                            <h3>Bolsas Deli</h3>
+                            <span class="price">$7.500</span>
+                            <a href="producto.html" class="btn">Ver</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <h3>El Emporio Descartables</h3>
+                    <p>Venta por mayor de artículos descartables para revendedores y negocios de distribución.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="../index.html">Inicio</a></li>
+                        <li><a href="productos.html">Productos</a></li>
+                        <li><a href="nosotros.html">Nosotros</a></li>
+                        <li><a href="contacto.html">Contacto</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Categorías</h3>
+                    <ul>
+                        <li><a href="categorias.html">Bolsas</a></li>
+                        <li><a href="categorias.html">Cajas</a></li>
+                        <li><a href="categorias.html">Bandejas</a></li>
+                        <li><a href="categorias.html">Vasos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Contacto</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-phone"></i> +54 9 351 123-4567</li>
+                        <li><i class="fas fa-envelope"></i> info@elmporiodescartables.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Córdoba, Argentina</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 EL EMPORIO DESCARTABLES. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+        });
+        
+        // Quantity controls
+        const quantityInput = document.getElementById('quantity');
+        const decreaseBtn = document.getElementById('decrease');
+        const increaseBtn = document.getElementById('increase');
+        
+        decreaseBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+        
+        increaseBtn.addEventListener('click', function() {
+            let value = parseInt(quantityInput.value);
+            quantityInput.value = value + 1;
+        });
+        
+        // Thumbnail gallery
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                thumbnails.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                // In a real implementation, this would change the main image
+            });
+        });
+        
+        // Option buttons
+        const optionButtons = document.querySelectorAll('.option-btn');
+        optionButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const group = this.closest('.option-group');
+                group.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        // Add to cart
+        document.querySelector('.add-to-cart-btn').addEventListener('click', function() {
+            const quantity = quantityInput.value;
+            alert('Agregado al carrito: ' + quantity + ' unidades');
+        });
+        
+        // Wishlist
+        document.querySelector('.wishlist-btn').addEventListener('click', function() {
+            const icon = this.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                this.style.color = '#e91e63';
+                alert('Agregado a favoritos');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                this.style.color = '';
+                alert('Eliminado de favoritos');
+            }
+        });
+    </script>
+</body>
+</html>
