@@ -8,272 +8,189 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .login-container {
-            min-height: calc(100vh - 300px);
+            min-height: calc(100vh - 400px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 60px 20px;
-            background: var(--bg-light);
-        }
-        
-        .login-box {
-            background: var(--bg-white);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 400px;
-        }
-        
-        .login-box h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            font-size: 28px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-color);
-            font-weight: 500;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 5px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        .form-group input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-        }
-        
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .remember-me input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-        }
-        
-        .login-btn {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-color);
-            color: var(--bg-white);
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        
-        .login-btn:hover {
             background: var(--secondary-color);
         }
         
-        .login-links {
+        .login-box {
+            background: var(--white);
+            padding: 50px 40px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 450px;
             text-align: center;
-            margin-top: 20px;
+        }
+        
+        .login-box h1 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .login-box p.subtitle {
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            font-size: 15px;
+        }
+        
+        .social-login {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .social-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .social-btn i {
+            font-size: 20px;
+        }
+        
+        .btn-google {
+            background-color: #db4437;
+        }
+        
+        .btn-google:hover {
+            background-color: #c53929;
+            transform: translateY(-2px);
+        }
+
+        .btn-facebook {
+            background-color: #4267B2;
+        }
+
+        .btn-facebook:hover {
+            background-color: #365899;
+            transform: translateY(-2px);
+        }
+        
+        .login-links {
+            margin-top: 30px;
+            font-size: 14px;
+            color: var(--text-muted);
         }
         
         .login-links a {
             color: var(--primary-color);
-            text-decoration: none;
+            font-weight: 600;
         }
         
         .login-links a:hover {
             text-decoration: underline;
         }
-        
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 30px 0;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-color);
-        }
-        
-        .divider span {
-            padding: 0 15px;
-            color: var(--text-light);
-        }
-        
-        .social-login {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-btn {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid var(--border-color);
-            border-radius: 5px;
-            background: var(--bg-white);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: border-color 0.3s;
-        }
-        
-        .social-btn:hover {
-            border-color: var(--primary-color);
-        }
     </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- Top Contact Bar -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="contact-info">
+                <span><i class="fas fa-phone"></i> +54 9 3512 40-0816</span>
+                <span><i class="fas fa-envelope"></i> elemporiodescartables@gmail.com</span>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5493512400816" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Main -->
     <header class="header">
-        <div class="header-top">
-            <div class="container">
-                <div class="header-top-content">
-                    <div class="contact-info">
-                        <span><i class="fas fa-phone"></i> +54 9 351 123-4567</span>
-                        <span><i class="fas fa-envelope"></i> info@elmporiodescartables.com</span>
-                    </div>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
-                    </div>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="../index.html">
+                        <img src="../img/logo.jpg" alt="El Emporio Descartables">
+                    </a>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar productos por nombre o categoría...">
+                    <button type="submit"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="header-actions">
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-heart"></i> Favoritos
+                    </a>
+                    <a href="#" class="action-btn">
+                        <i class="fas fa-shopping-cart"></i> Mi Pedido
+                    </a>
+                    <a href="login.html" class="action-btn">
+                        <i class="fas fa-user"></i> Iniciar Sesión
+                    </a>
                 </div>
             </div>
         </div>
-        
-        <div class="header-main">
-            <div class="container">
-                <div class="header-main-content">
-                    <div class="logo">
-                        <a href="../index.html">
-                            <img src="../img/logo.png" alt="El Emporio Descartables">
-                        </a>
-                    </div>
-                    
-                    <div class="search-bar">
-                        <input type="text" placeholder="Buscar productos...">
-                        <button type="submit"><i class="fas fa-search"></i></button>
-                    </div>
-                    
-                    <div class="header-actions">
-                        <a href="#" class="action-btn">
-                            <i class="fas fa-heart"></i>
-                            <span class="count">0</span>
-                        </a>
-                        <a href="#" class="action-btn">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="count">0</span>
-                        </a>
-                        <a href="login.html" class="action-btn">
-                            <i class="fas fa-user"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <nav class="main-nav">
-            <div class="container">
-                <div class="nav-content">
-                    <button class="mobile-menu-btn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    
-                    <ul class="nav-menu">
-                        <li><a href="../index.html">Inicio</a></li>
-                        <li class="dropdown">
-                            <a href="#">Categorías <i class="fas fa-chevron-down"></i></a>
-                            <ul class="dropdown-menu">
-                                <li><a href="categorias.html">Bolsas</a></li>
-                                <li><a href="categorias.html">Moldes</a></li>
-                                <li><a href="categorias.html">Cajas</a></li>
-                                <li><a href="categorias.html">Bandejas</a></li>
-                                <li><a href="categorias.html">Vasos</a></li>
-                                <li><a href="categorias.html">Platos</a></li>
-                                <li><a href="categorias.html">Utensilios</a></li>
-                                <li><a href="categorias.html">Cintas</a></li>
-                                <li><a href="categorias.html">Rollos</a></li>
-                                <li><a href="categorias.html">Servilletas</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="productos.html">Productos</a></li>
-                        <li><a href="nosotros.html">Nosotros</a></li>
-                        <li><a href="contacto.html">Contacto</a></li>
-                    </ul>
-                    
-                    <div class="nav-right">
-                        <a href="login.html" class="login-btn">
-                            <i class="fas fa-user"></i> Iniciar sesión
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </nav>
     </header>
+
+    <!-- Navigation -->
+    <nav class="main-nav">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="../index.html">INICIO</a></li>
+                <li class="dropdown">
+                    <a href="#">PRODUCTOS <i class="fas fa-chevron-down"></i></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Bolsas</a></li>
+                        <li><a href="#">Moldes</a></li>
+                        <li><a href="#">Cajas</a></li>
+                        <li><a href="#">Bandejas</a></li>
+                        <li><a href="#">Vasos</a></li>
+                        <li><a href="#">Librería</a></li>
+                        <li><a href="#">Tapas</a></li>
+                        <li><a href="#">Bobinas</a></li>
+                        <li><a href="#">Platos</a></li>
+                        <li><a href="#">Utensilios</a></li>
+                        <li><a href="#">Cintas</a></li>
+                        <li><a href="#">Rollos</a></li>
+                        <li><a href="#">Estuches</a></li>
+                        <li><a href="#">Servilletas</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">NOSOTROS</a></li>
+                <li><a href="#">CONTACTO</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <!-- Login Section -->
     <section class="login-container">
         <div class="login-box">
-            <h1>Iniciar Sesión</h1>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" required>
-                </div>
-                
-                <div class="remember-me">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Recordarme</label>
-                </div>
-                
-                <button type="submit" class="login-btn">Iniciar Sesión</button>
-            </form>
-            
-            <div class="login-links">
-                <a href="#">¿Olvidaste tu contraseña?</a>
-            </div>
-            
-            <div class="divider">
-                <span>o</span>
-            </div>
+            <h1>Bienvenido</h1>
+            <p class="subtitle">Inicia sesión rápidamente con tus redes sociales para acceder a tus pedidos y favoritos.</p>
             
             <div class="social-login">
-                <button class="social-btn">
-                    <i class="fab fa-google"></i> Google
+                <button class="social-btn btn-google" onclick="simularLogin('Google')">
+                    <i class="fab fa-google"></i> Ingresar con Google
                 </button>
-                <button class="social-btn">
-                    <i class="fab fa-facebook"></i> Facebook
+                <button class="social-btn btn-facebook" onclick="simularLogin('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Ingresar con Facebook
                 </button>
             </div>
             
-            <div class="login-links" style="margin-top: 30px;">
-                <p>¿No tenés cuenta? <a href="#">Registrate aquí</a></p>
+            <div class="login-links">
+                <p>Al ingresar, aceptas nuestros <a href="#">Términos y Condiciones</a>.</p>
             </div>
         </div>
     </section>
@@ -282,64 +199,57 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
+                <div class="footer-col about">
+                    <img src="../img/logo.jpg" alt="El Emporio Descartables" class="footer-logo">
+                    <p>Venta minorista de artículos descartables. Envíos a todo el país. Calidad y precio directo de fábrica.</p>
+                </div>
+                
                 <div class="footer-col">
-                    <h3>El Emporio Descartables</h3>
-                    <p>Venta por mayor de artículos descartables para revendedores y negocios de distribución.</p>
-                    <div class="social-links">
+                    <h3>Categorías Principales</h3>
+                    <ul>
+                        <li><a href="#">Bolsas</a></li>
+                        <li><a href="#">Cajas</a></li>
+                        <li><a href="#">Bandejas</a></li>
+                        <li><a href="#">Vasos</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Información</h3>
+                    <ul>
+                        <li><a href="#">Cómo Comprar</a></li>
+                        <li><a href="#">Envíos y Medios de Pago</a></li>
+                        <li><a href="#">Preguntas Frecuentes</a></li>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col contact-col">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Córdoba, Argentina</li>
+                        <li><i class="fas fa-phone"></i> +54 9 3512 40-0816</li>
+                        <li><i class="fas fa-envelope"></i> elemporiodescartables@gmail.com</li>
+                    </ul>
+                    <div class="social-links-footer">
                         <a href="#"><i class="fab fa-facebook"></i></a>
                         <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Enlaces Rápidos</h3>
-                    <ul>
-                        <li><a href="../index.html">Inicio</a></li>
-                        <li><a href="productos.html">Productos</a></li>
-                        <li><a href="nosotros.html">Nosotros</a></li>
-                        <li><a href="contacto.html">Contacto</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Categorías</h3>
-                    <ul>
-                        <li><a href="categorias.html">Bolsas</a></li>
-                        <li><a href="categorias.html">Cajas</a></li>
-                        <li><a href="categorias.html">Bandejas</a></li>
-                        <li><a href="categorias.html">Vasos</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Contacto</h3>
-                    <ul class="contact-info">
-                        <li><i class="fas fa-phone"></i> +54 9 351 123-4567</li>
-                        <li><i class="fas fa-envelope"></i> info@elmporiodescartables.com</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Córdoba, Argentina</li>
-                    </ul>
                 </div>
             </div>
             
             <div class="footer-bottom">
-                <p>&copy; 2026 EL EMPORIO DESCARTABLES. Todos los derechos reservados.</p>
+                <p>&copy; 2026 El Emporio Descartables. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            if (email && password) {
-                alert('Inicio de sesión exitoso. Bienvenido a El Emporio Descartables');
-                // Redirect to home page
-                window.location.href = '../index.html';
-            }
-        });
+        function simularLogin(proveedor) {
+            alert('Conectando de forma segura con ' + proveedor + '...\n\n¡Inicio de sesión exitoso! (Simulación)');
+            // Redirigir al home
+            window.location.href = '../index.html';
+        }
     </script>
 </body>
 </html>
