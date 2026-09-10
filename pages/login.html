@@ -5,251 +5,484 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - El Emporio Descartables</title>
     <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .login-container {
-            min-height: calc(100vh - 400px);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ---- Fondo animado ---- */
+        .login-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #2d1b69 0%, #4834d4 35%, #6c5ce7 65%, #a29bfe 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(162, 155, 254, 0.25) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 80%, rgba(108, 92, 231, 0.3) 0%, transparent 50%),
+                        radial-gradient(ellipse at 90% 10%, rgba(255,255,255,0.05) 0%, transparent 40%);
+            animation: bgShift 12s ease-in-out infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes bgShift {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-20px, -20px) rotate(3deg); }
+        }
+
+        /* Círculos decorativos flotantes */
+        .floating-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(2px);
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .floating-circle:nth-child(1) {
+            width: 300px; height: 300px;
+            top: -80px; left: -80px;
+            animation-delay: 0s;
+        }
+        .floating-circle:nth-child(2) {
+            width: 200px; height: 200px;
+            top: 60%; right: -50px;
+            animation-delay: 3s;
+        }
+        .floating-circle:nth-child(3) {
+            width: 150px; height: 150px;
+            bottom: 10%; left: 10%;
+            animation-delay: 1.5s;
+        }
+        .floating-circle:nth-child(4) {
+            width: 100px; height: 100px;
+            top: 20%; right: 20%;
+            animation-delay: 5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        /* ---- Wrapper central ---- */
+        .login-wrapper {
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 60px 20px;
-            background: var(--secondary-color);
-        }
-        
-        .login-box {
-            background: var(--white);
-            padding: 50px 40px;
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            width: 100%;
-            max-width: 450px;
-            text-align: center;
-        }
-        
-        .login-box h1 {
-            color: var(--primary-dark);
-            margin-bottom: 10px;
-            font-size: 28px;
+            position: relative;
+            z-index: 10;
         }
 
-        .login-box p.subtitle {
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            font-size: 15px;
+        /* ---- Card principal (glassmorphism) ---- */
+        .login-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 52px 48px;
+            width: 100%;
+            max-width: 440px;
+            text-align: center;
+            box-shadow:
+                0 25px 50px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255,255,255,0.08) inset;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(30px);
         }
-        
-        .social-login {
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ---- Logo dentro de la card ---- */
+        .card-logo {
+            margin-bottom: 28px;
+        }
+
+        .card-logo img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,255,255,0.4);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        /* ---- Texto ---- */
+        .card-title {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 40px;
+        }
+
+        /* ---- Divisor ---- */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.25);
+        }
+
+        .divider span {
+            color: rgba(255,255,255,0.5);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ---- Botones sociales ---- */
+        .social-buttons {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 14px;
         }
-        
+
         .social-btn {
             width: 100%;
-            padding: 14px;
+            padding: 15px 20px;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            color: var(--white);
-            transition: var(--transition);
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.2px;
+        }
+
+        .social-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255,255,255,0);
+            transition: background 0.2s ease;
+        }
+
+        .social-btn:hover::after {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+        }
+
+        .social-btn:active {
+            transform: translateY(0);
         }
 
         .social-btn i {
             font-size: 20px;
         }
-        
+
+        /* Google */
         .btn-google {
-            background-color: #db4437;
-        }
-        
-        .btn-google:hover {
-            background-color: #c53929;
-            transform: translateY(-2px);
+            background: #ffffff;
+            color: #3c4043;
         }
 
+        .btn-google i {
+            color: #db4437;
+        }
+
+        .btn-google:hover {
+            background: #f8f9fa;
+        }
+
+        /* Facebook */
         .btn-facebook {
-            background-color: #4267B2;
+            background: #1877f2;
+            color: #ffffff;
         }
 
         .btn-facebook:hover {
-            background-color: #365899;
-            transform: translateY(-2px);
+            background: #1565e0;
         }
-        
-        .login-links {
-            margin-top: 30px;
-            font-size: 14px;
-            color: var(--text-muted);
+
+        /* ---- Términos ---- */
+        .terms-text {
+            margin-top: 32px;
+            color: rgba(255,255,255,0.5);
+            font-size: 12.5px;
+            line-height: 1.6;
         }
-        
-        .login-links a {
-            color: var(--primary-color);
-            font-weight: 600;
-        }
-        
-        .login-links a:hover {
+
+        .terms-text a {
+            color: rgba(255,255,255,0.8);
             text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .terms-text a:hover {
+            color: #ffffff;
+        }
+
+        /* ---- Volver al inicio ---- */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 28px;
+            color: rgba(255,255,255,0.65);
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+        .back-link i {
+            font-size: 13px;
+        }
+
+        /* ---- Badge de seguridad ---- */
+        .security-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 30px;
+            padding: 6px 14px;
+            margin-bottom: 28px;
+            color: rgba(255,255,255,0.8);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .security-badge i {
+            color: #6dff9f;
+            font-size: 11px;
+        }
+
+        /* ---- Toast de confirmación ---- */
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-80px);
+            background: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(12px);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 9999;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            flex-shrink: 0;
+        }
+
+        .toast-google .toast-icon { background: #db4437; }
+        .toast-facebook .toast-icon { background: #1877f2; }
+
+        /* ---- Spinner dentro del botón ---- */
+        .social-btn .btn-spinner {
+            display: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        .social-btn.loading .btn-icon,
+        .social-btn.loading .btn-text { opacity: 0; }
+        .social-btn.loading .btn-spinner { display: block; position: absolute; }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ---- Responsive ---- */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 36px 28px;
+                border-radius: 20px;
+            }
+            .card-title { font-size: 24px; }
         }
     </style>
 </head>
 <body>
-    <!-- Top Contact Bar -->
-    <div class="top-bar">
-        <div class="container">
-            <div class="contact-info">
-                <span><i class="fas fa-phone"></i> +54 9 3512 40-0816</span>
-                <span><i class="fas fa-envelope"></i> elemporiodescartables@gmail.com</span>
-            </div>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5493512400816" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <!-- Toast de confirmación -->
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <i class="fab fa-google" id="toast-ico"></i>
+        </div>
+        <span id="toast-msg">Conectando con Google...</span>
+    </div>
+
+    <div class="login-page">
+        <!-- Círculos decorativos -->
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+        <div class="floating-circle"></div>
+
+        <div class="login-wrapper">
+            <div class="login-card">
+
+                <!-- Logo -->
+                <div class="card-logo">
+                    <img src="../img/logo.jpg" alt="El Emporio Descartables">
+                </div>
+
+                <!-- Badge seguridad -->
+                <div class="security-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    Acceso seguro y privado
+                </div>
+
+                <!-- Título -->
+                <h1 class="card-title">¡Bienvenido!</h1>
+                <p class="card-subtitle">
+                    Ingresá con tu cuenta de Google o Facebook para<br>
+                    acceder a tus pedidos y favoritos.
+                </p>
+
+                <!-- Divisor -->
+                <div class="divider">
+                    <span>Elegí tu método</span>
+                </div>
+
+                <!-- Botones sociales -->
+                <div class="social-buttons">
+                    <button class="social-btn btn-google" id="btn-google" onclick="handleLogin(this, 'Google')">
+                        <span class="btn-spinner"></span>
+                        <i class="fab fa-google btn-icon"></i>
+                        <span class="btn-text">Continuar con Google</span>
+                    </button>
+
+                    <button class="social-btn btn-facebook" id="btn-facebook" onclick="handleLogin(this, 'Facebook')">
+                        <span class="btn-spinner"></span>
+                        <i class="fab fa-facebook-f btn-icon"></i>
+                        <span class="btn-text">Continuar con Facebook</span>
+                    </button>
+                </div>
+
+                <!-- Términos -->
+                <p class="terms-text">
+                    Al ingresar, aceptás nuestros
+                    <a href="#">Términos y Condiciones</a> y la
+                    <a href="#">Política de Privacidad</a>.
+                </p>
+
+                <!-- Volver -->
+                <a href="../index.html" class="back-link">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver al inicio
+                </a>
+
             </div>
         </div>
     </div>
 
-    <!-- Header Main -->
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <a href="../index.html">
-                        <img src="../img/logo.jpg" alt="El Emporio Descartables">
-                    </a>
-                </div>
-                
-                <div class="search-bar">
-                    <input type="text" placeholder="Buscar productos por nombre o categoría...">
-                    <button type="submit"><i class="fas fa-search"></i></button>
-                </div>
-                
-                <div class="header-actions">
-                    <a href="#" class="action-btn">
-                        <i class="fas fa-heart"></i> Favoritos
-                    </a>
-                    <a href="#" class="action-btn">
-                        <i class="fas fa-shopping-cart"></i> Mi Pedido
-                    </a>
-                    <a href="login.html" class="action-btn">
-                        <i class="fas fa-user"></i> Iniciar Sesión
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Navigation -->
-    <nav class="main-nav">
-        <div class="container">
-            <ul class="nav-menu">
-                <li><a href="../index.html">INICIO</a></li>
-                <li class="dropdown">
-                    <a href="#">PRODUCTOS <i class="fas fa-chevron-down"></i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Bolsas</a></li>
-                        <li><a href="#">Moldes</a></li>
-                        <li><a href="#">Cajas</a></li>
-                        <li><a href="#">Bandejas</a></li>
-                        <li><a href="#">Vasos</a></li>
-                        <li><a href="#">Librería</a></li>
-                        <li><a href="#">Tapas</a></li>
-                        <li><a href="#">Bobinas</a></li>
-                        <li><a href="#">Platos</a></li>
-                        <li><a href="#">Utensilios</a></li>
-                        <li><a href="#">Cintas</a></li>
-                        <li><a href="#">Rollos</a></li>
-                        <li><a href="#">Estuches</a></li>
-                        <li><a href="#">Servilletas</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">NOSOTROS</a></li>
-                <li><a href="#">CONTACTO</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Login Section -->
-    <section class="login-container">
-        <div class="login-box">
-            <h1>Bienvenido</h1>
-            <p class="subtitle">Inicia sesión rápidamente con tus redes sociales para acceder a tus pedidos y favoritos.</p>
-            
-            <div class="social-login">
-                <button class="social-btn btn-google" onclick="simularLogin('Google')">
-                    <i class="fab fa-google"></i> Ingresar con Google
-                </button>
-                <button class="social-btn btn-facebook" onclick="simularLogin('Facebook')">
-                    <i class="fab fa-facebook-f"></i> Ingresar con Facebook
-                </button>
-            </div>
-            
-            <div class="login-links">
-                <p>Al ingresar, aceptas nuestros <a href="#">Términos y Condiciones</a>.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col about">
-                    <img src="../img/logo.jpg" alt="El Emporio Descartables" class="footer-logo">
-                    <p>Venta minorista de artículos descartables. Envíos a todo el país. Calidad y precio directo de fábrica.</p>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Categorías Principales</h3>
-                    <ul>
-                        <li><a href="#">Bolsas</a></li>
-                        <li><a href="#">Cajas</a></li>
-                        <li><a href="#">Bandejas</a></li>
-                        <li><a href="#">Vasos</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h3>Información</h3>
-                    <ul>
-                        <li><a href="#">Cómo Comprar</a></li>
-                        <li><a href="#">Envíos y Medios de Pago</a></li>
-                        <li><a href="#">Preguntas Frecuentes</a></li>
-                        <li><a href="#">Términos y Condiciones</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col contact-col">
-                    <h3>Contacto</h3>
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> Córdoba, Argentina</li>
-                        <li><i class="fas fa-phone"></i> +54 9 3512 40-0816</li>
-                        <li><i class="fas fa-envelope"></i> elemporiodescartables@gmail.com</li>
-                    </ul>
-                    <div class="social-links-footer">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2026 El Emporio Descartables. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        function simularLogin(proveedor) {
-            alert('Conectando de forma segura con ' + proveedor + '...\n\n¡Inicio de sesión exitoso! (Simulación)');
-            // Redirigir al home
-            window.location.href = '../index.html';
+        function handleLogin(btn, proveedor) {
+            // Agregar estado loading al botón
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            // Mostrar toast
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-msg');
+            const toastIco = document.getElementById('toast-ico');
+
+            toast.className = 'toast';
+            if (proveedor === 'Google') {
+                toast.classList.add('toast-google');
+                toastIco.className = 'fab fa-google';
+            } else {
+                toast.classList.add('toast-facebook');
+                toastIco.className = 'fab fa-facebook-f';
+            }
+
+            toastMsg.textContent = `Conectando con ${proveedor}...`;
+            toast.classList.add('show');
+
+            // Simular proceso de login
+            setTimeout(() => {
+                toastMsg.textContent = `¡Sesión iniciada con ${proveedor}! Redirigiendo...`;
+                setTimeout(() => {
+                    window.location.href = '../index.html';
+                }, 1000);
+            }, 2000);
         }
     </script>
+
 </body>
 </html>
