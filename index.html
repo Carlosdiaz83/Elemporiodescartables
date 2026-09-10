@@ -3,12 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Emporio Descartables</title>
+    <title>El Emporio Descartables - Venta Minorista de Descartables en Córdoba</title>
+    <meta name="description" content="El Emporio Descartables. Venta minorista de artículos descartables en Córdoba. Bolsas, vasos, cajas, bandejas, servilletas y más. Envíos a todo el país.">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ---- Precio visible (logueado) ---- */
+        .product-price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin: 8px 0 12px;
+            letter-spacing: -0.5px;
+        }
+
+        /* ---- Precio bloqueado (no logueado) ---- */
+        .product-price-locked {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin: 8px 0 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #f8f6ff;
+            border: 1px dashed var(--primary-light);
+            border-radius: 6px;
+            padding: 7px 10px;
+        }
+
+        .product-price-locked i {
+            color: var(--primary-light);
+        }
+
+        .product-price-locked a {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        /* ---- Botón favorito activo ---- */
+        .btn-fav.active i { color: #e91e63; }
+        .btn-fav.active { border-color: #e91e63; }
+
+        /* ---- Badge contador header ---- */
+        .badge-count {
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 700;
+            width: 17px;
+            height: 17px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 2px;
+            vertical-align: middle;
+        }
+
+        /* ---- User menu en header ---- */
+        #header-user-menu {
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #header-user-menu .user-name {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        #btn-logout {
+            font-size: 13px;
+            color: var(--text-muted);
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        #btn-logout:hover { background: #f1f2f6; color: var(--text-main); }
+
+        /* ---- Toast global ---- */
+        .site-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            opacity: 0;
+            background: #2d3436;
+            color: white;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 9999;
+            transition: all 0.35s ease;
+            white-space: nowrap;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            pointer-events: none;
+        }
+
+        .site-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        .site-toast.toast-success { background: #00b894; }
+        .site-toast.toast-warning { background: #e17055; }
+        .site-toast.toast-info { background: var(--primary-color); }
+
+        /* ---- Sección NOSOTROS ---- */
+        #nosotros {
+            padding: 70px 0;
+            background: var(--white);
+        }
+
+        .nosotros-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .nosotros-text h2 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--primary-dark);
+            margin-bottom: 16px;
+            line-height: 1.2;
+        }
+
+        .nosotros-text p {
+            color: var(--text-muted);
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .nosotros-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .stat-box {
+            text-align: center;
+            background: var(--secondary-color);
+            border-radius: 12px;
+            padding: 20px 10px;
+        }
+
+        .stat-box .num {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-box .label {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .nosotros-img {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(108,92,231,0.15);
+        }
+
+        .nosotros-img img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .nosotros-grid { grid-template-columns: 1fr; }
+            .nosotros-img { display: none; }
+            .nosotros-stats { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* ---- Sección CONTACTO ---- */
+        #contacto {
+            padding: 70px 0;
+            background: linear-gradient(135deg, #f8f6ff 0%, var(--secondary-color) 100%);
+        }
+
+        #contacto .section-title { margin-bottom: 10px; }
+
+        .contacto-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 50px;
+            font-size: 15px;
+        }
+
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .contacto-info h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 24px;
+        }
+
+        .contacto-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .contacto-item .ico {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .contacto-item .detail strong {
+            display: block;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .contacto-item .detail span, .contacto-item .detail a {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        .contacto-item .detail a:hover { color: var(--primary-color); }
+
+        .contacto-wa-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 28px;
+            background: #25d366;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            transition: var(--transition);
+            box-shadow: 0 6px 20px rgba(37,211,102,0.35);
+        }
+
+        .contacto-wa-btn:hover {
+            background: #1ebe5b;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(37,211,102,0.4);
+            color: white;
+        }
+
+        /* Formulario */
+        .contacto-form {
+            background: white;
+            border-radius: 16px;
+            padding: 36px;
+            box-shadow: var(--shadow);
+        }
+
+        .contacto-form h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: var(--text-main);
+            transition: border-color 0.2s;
+            outline: none;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary-color);
+            background: white;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 13px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .form-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+        @media (max-width: 768px) {
+            .contacto-grid { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Top Contact Bar -->
+
+    <!-- ================================================
+         TOP CONTACT BAR
+    ================================================= -->
     <div class="top-bar">
         <div class="container">
             <div class="contact-info">
@@ -16,75 +358,103 @@
                 <span><i class="fas fa-envelope"></i> elemporiodescartables@gmail.com</span>
             </div>
             <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="https://wa.me/5493512400816" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="https://facebook.com" target="_blank" rel="noopener" title="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://instagram.com" target="_blank" rel="noopener" title="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/5493512400816" target="_blank" rel="noopener" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
             </div>
         </div>
     </div>
 
-    <!-- Header Main -->
+    <!-- ================================================
+         HEADER
+    ================================================= -->
     <header class="header">
         <div class="container">
             <div class="header-content">
+                <!-- Logo -->
                 <div class="logo">
                     <a href="index.html">
-                        <!-- El usuario debe reemplazar esta imagen con su logo -->
                         <img src="img/logo.jpg" alt="El Emporio Descartables">
                     </a>
                 </div>
-                
+
+                <!-- Buscador -->
                 <div class="search-bar">
-                    <input type="text" placeholder="Buscar productos por nombre o categoría...">
-                    <button type="submit"><i class="fas fa-search"></i></button>
+                    <input type="text" id="search-input" placeholder="Buscar productos por nombre o categoría...">
+                    <button type="submit" id="search-btn"><i class="fas fa-search"></i></button>
                 </div>
-                
+
+                <!-- Acciones -->
                 <div class="header-actions">
-                    <a href="#" class="action-btn">
-                        <i class="fas fa-heart"></i> Favoritos
+                    <!-- Favoritos -->
+                    <a href="#" id="btn-favoritos" class="action-btn" title="Mis Favoritos">
+                        <i class="fas fa-heart"></i>
+                        Favoritos
+                        <span class="badge-count" id="fav-count"></span>
                     </a>
-                    <a href="#" class="action-btn">
-                        <i class="fas fa-shopping-cart"></i> Mi Pedido
+
+                    <!-- Mi Pedido -->
+                    <a href="#" id="btn-mi-pedido" class="action-btn" title="Mi Pedido">
+                        <i class="fas fa-shopping-cart"></i>
+                        Mi Pedido
+                        <span class="badge-count" id="cart-count"></span>
                     </a>
-                    <a href="pages/login.html" class="action-btn">
+
+                    <!-- Login (no logueado) -->
+                    <a href="pages/login.html" id="header-login-btn" class="action-btn login-highlight">
                         <i class="fas fa-user"></i> Iniciar Sesión
                     </a>
+
+                    <!-- User menu (logueado) -->
+                    <div id="header-user-menu">
+                        <i class="fas fa-user-circle" style="color:var(--primary-color);font-size:20px"></i>
+                        <span class="user-name">Hola, <span id="header-user-name"></span></span>
+                        <button id="btn-logout" title="Cerrar sesión">
+                            <i class="fas fa-sign-out-alt"></i> Salir
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <!-- Navigation -->
+    <!-- ================================================
+         NAVEGACIÓN PRINCIPAL
+    ================================================= -->
     <nav class="main-nav">
         <div class="container">
             <ul class="nav-menu">
                 <li><a href="index.html" class="active">INICIO</a></li>
+
                 <li class="dropdown">
-                    <a href="#">PRODUCTOS <i class="fas fa-chevron-down"></i></a>
+                    <a href="#catalogo">PRODUCTOS <i class="fas fa-chevron-down"></i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#">Bolsas</a></li>
-                        <li><a href="#">Moldes</a></li>
-                        <li><a href="#">Cajas</a></li>
-                        <li><a href="#">Bandejas</a></li>
-                        <li><a href="#">Vasos</a></li>
-                        <li><a href="#">Librería</a></li>
-                        <li><a href="#">Tapas</a></li>
-                        <li><a href="#">Bobinas</a></li>
-                        <li><a href="#">Platos</a></li>
-                        <li><a href="#">Utensilios</a></li>
-                        <li><a href="#">Cintas</a></li>
-                        <li><a href="#">Rollos</a></li>
-                        <li><a href="#">Estuches</a></li>
-                        <li><a href="#">Servilletas</a></li>
+                        <li><a href="#catalogo">Bolsas</a></li>
+                        <li><a href="#catalogo">Moldes</a></li>
+                        <li><a href="#catalogo">Cajas</a></li>
+                        <li><a href="#catalogo">Bandejas</a></li>
+                        <li><a href="#catalogo">Vasos</a></li>
+                        <li><a href="#catalogo">Librería</a></li>
+                        <li><a href="#catalogo">Tapas</a></li>
+                        <li><a href="#catalogo">Bobinas</a></li>
+                        <li><a href="#catalogo">Platos</a></li>
+                        <li><a href="#catalogo">Utensilios</a></li>
+                        <li><a href="#catalogo">Cintas</a></li>
+                        <li><a href="#catalogo">Rollos</a></li>
+                        <li><a href="#catalogo">Estuches</a></li>
+                        <li><a href="#catalogo">Servilletas</a></li>
                     </ul>
                 </li>
-                <li><a href="#">NOSOTROS</a></li>
-                <li><a href="#">CONTACTO</a></li>
+
+                <li><a href="#nosotros">NOSOTROS</a></li>
+                <li><a href="#contacto">CONTACTO</a></li>
             </ul>
         </div>
     </nav>
 
-    <!-- Hero / Banner Section -->
+    <!-- ================================================
+         HERO BANNER
+    ================================================= -->
     <section class="hero">
         <div class="container">
             <div class="hero-banner">
@@ -95,7 +465,9 @@
         </div>
     </section>
 
-    <!-- Features -->
+    <!-- ================================================
+         FEATURES
+    ================================================= -->
     <section class="features">
         <div class="container">
             <div class="features-grid">
@@ -124,140 +496,163 @@
         </div>
     </section>
 
-    <!-- Catalog Section -->
+    <!-- ================================================
+         CATÁLOGO DE PRODUCTOS
+    ================================================= -->
     <section id="catalogo" class="catalog">
         <div class="container">
             <h2 class="section-title">Nuestros Productos</h2>
-            
-            <div class="products-grid">
-                <!-- Producto 1 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/4156-home_default/bolsas-rion-fantasia-premium-40-x-50-x-50-uni.jpg" alt="Bolsas Consorcio">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Bolsas</span>
-                        <h3>Bolsas de Consorcio Varias Medidas</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon" title="Agregar a Favoritos"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- Producto 2 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/3987-home_default/caja-art-529-feliz-dia-20-x-20-x-98-x-25-u.jpg" alt="Vasos Térmicos">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Vasos</span>
-                        <h3>Vasos Térmicos de Telgopor</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Producto 3 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/4154-home_default/bolsas-doy-pack-papel-kraft-c-ventana-250-ml-11-x-15-x-50-uni.jpg" alt="Bandejas PET">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Bandejas</span>
-                        <h3>Bandejas Plásticas PET Transparentes</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Producto 4 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/4158-home_default/bolsas-rion-fantasia-premium-50-x-60-x-50-uni.jpg" alt="Cajas Pizza">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Cajas</span>
-                        <h3>Cajas para Pizza de Cartón Corrugado</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Producto 5 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/3934-home_default/caja-cupcake-blanca-con-cuna-x-50-uni.jpg" alt="Rollo de Film">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Rollos</span>
-                        <h3>Rollo de Film PVC Adherente</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Producto 6 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/3360-home_default/servilleta-ecologica-beige-33-x-33-x-1-u.jpg" alt="Servilletas">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Servilletas</span>
-                        <h3>Servilletas de Papel Blancas</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Producto 7 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/4145-home_default/bolsas-rion-fantasia-premium-20-x-30-x-50-uni.jpg" alt="Cubiertos Descartables">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Utensilios</span>
-                        <h3>Set de Cubiertos Descartables</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Producto 8 -->
-                <div class="product-card">
-                    <div class="product-image">
-                        <img src="https://vasadescartables.com/img/cms/BANNER-WEB-COMPU-original.jpg" alt="Platos de Cartón">
-                    </div>
-                    <div class="product-info">
-                        <span class="category">Platos</span>
-                        <h3>Platos de Cartón Blancos Redondos</h3>
-                        <div class="product-actions">
-                            <button class="btn-outline">Ver Producto</button>
-                            <button class="btn-icon"><i class="far fa-heart"></i></button>
-                        </div>
-                    </div>
+            <!-- Grilla renderizada por JS -->
+            <div class="products-grid" id="products-grid">
+                <!-- Los productos se renderizan desde JS -->
+                <div style="text-align:center;color:var(--text-muted);padding:40px;grid-column:1/-1;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:30px;margin-bottom:12px;display:block"></i>
+                    Cargando productos…
                 </div>
             </div>
-            
+
             <div class="view-all">
-                <button class="btn-primary">Ver Todos los Productos</button>
+                <button class="btn-primary" onclick="document.getElementById('catalogo').scrollIntoView({behavior:'smooth'})">
+                    Ver Todos los Productos
+                </button>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ================================================
+         NOSOTROS
+    ================================================= -->
+    <section id="nosotros">
+        <div class="container">
+            <h2 class="section-title">Sobre Nosotros</h2>
+
+            <div class="nosotros-grid">
+                <div class="nosotros-text">
+                    <h2>Tu proveedor de descartables<br>en Córdoba</h2>
+                    <p>
+                        En <strong>El Emporio Descartables</strong> llevamos años siendo el punto de referencia
+                        en la venta minorista de artículos descartables en Córdoba y toda Argentina.
+                    </p>
+                    <p>
+                        Trabajamos directamente con fábricas nacionales para ofrecerte precios
+                        competitivos sin intermediarios. Nuestro catálogo cuenta con más de
+                        <strong>1400 artículos</strong>: bolsas, vasos, cajas, bandejas, servilletas, utensilios y mucho más.
+                    </p>
+                    <p>
+                        Realizamos envíos a todo el país con múltiples opciones de pago.
+                        ¿Tenés dudas? Escribinos por WhatsApp y te asesoramos sin compromiso.
+                    </p>
+
+                    <div class="nosotros-stats">
+                        <div class="stat-box">
+                            <span class="num">+1400</span>
+                            <span class="label">Productos</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="num">+5</span>
+                            <span class="label">Años en el mercado</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="num">24h</span>
+                            <span class="label">Despacho</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nosotros-img">
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&q=80"
+                         alt="Local El Emporio Descartables">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         CONTACTO
+    ================================================= -->
+    <section id="contacto">
+        <div class="container">
+            <h2 class="section-title">Contacto</h2>
+            <p class="contacto-subtitle">Estamos para ayudarte. Escribinos por cualquiera de estos medios.</p>
+
+            <div class="contacto-grid">
+                <!-- Info de contacto -->
+                <div class="contacto-info">
+                    <h3>¿Cómo contactarnos?</h3>
+
+                    <div class="contacto-item">
+                        <div class="ico"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="detail">
+                            <strong>Ubicación</strong>
+                            <span>Córdoba, Argentina</span>
+                        </div>
+                    </div>
+
+                    <div class="contacto-item">
+                        <div class="ico"><i class="fas fa-phone"></i></div>
+                        <div class="detail">
+                            <strong>Teléfono / WhatsApp</strong>
+                            <a href="tel:+5493512400816">+54 9 3512 40-0816</a>
+                        </div>
+                    </div>
+
+                    <div class="contacto-item">
+                        <div class="ico"><i class="fas fa-envelope"></i></div>
+                        <div class="detail">
+                            <strong>Email</strong>
+                            <a href="mailto:elemporiodescartables@gmail.com">elemporiodescartables@gmail.com</a>
+                        </div>
+                    </div>
+
+                    <div class="contacto-item">
+                        <div class="ico"><i class="fas fa-clock"></i></div>
+                        <div class="detail">
+                            <strong>Horario de atención</strong>
+                            <span>Lunes a Viernes de 8:00 a 18:00 hs</span>
+                        </div>
+                    </div>
+
+                    <a href="https://wa.me/5493512400816?text=Hola!%20Quiero%20consultar%20sobre%20sus%20productos"
+                       target="_blank" class="contacto-wa-btn">
+                        <i class="fab fa-whatsapp" style="font-size:20px"></i>
+                        Escribinos por WhatsApp
+                    </a>
+                </div>
+
+                <!-- Formulario -->
+                <div class="contacto-form">
+                    <h3>Envianos un mensaje</h3>
+
+                    <form id="form-contacto" novalidate>
+                        <div class="form-group">
+                            <label for="contact-name">Nombre completo *</label>
+                            <input type="text" id="contact-name" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Email *</label>
+                            <input type="email" id="contact-email" placeholder="tu@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-phone">Teléfono</label>
+                            <input type="tel" id="contact-phone" placeholder="+54 9 ...">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-msg">Mensaje *</label>
+                            <textarea id="contact-msg" placeholder="¿En qué podemos ayudarte?" required></textarea>
+                        </div>
+                        <button type="submit" class="form-submit">
+                            <i class="fas fa-paper-plane"></i> Enviar Mensaje
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================
+         FOOTER
+    ================================================= -->
     <footer class="footer">
         <div class="container">
             <div class="footer-grid">
@@ -265,47 +660,66 @@
                     <img src="img/logo.jpg" alt="El Emporio Descartables" class="footer-logo">
                     <p>Venta minorista de artículos descartables. Envíos a todo el país. Calidad y precio directo de fábrica.</p>
                 </div>
-                
+
                 <div class="footer-col">
                     <h3>Categorías Principales</h3>
                     <ul>
-                        <li><a href="#">Bolsas</a></li>
-                        <li><a href="#">Cajas</a></li>
-                        <li><a href="#">Bandejas</a></li>
-                        <li><a href="#">Vasos</a></li>
+                        <li><a href="#catalogo">Bolsas</a></li>
+                        <li><a href="#catalogo">Cajas</a></li>
+                        <li><a href="#catalogo">Bandejas</a></li>
+                        <li><a href="#catalogo">Vasos</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-col">
                     <h3>Información</h3>
                     <ul>
-                        <li><a href="#">Cómo Comprar</a></li>
-                        <li><a href="#">Envíos y Medios de Pago</a></li>
-                        <li><a href="#">Preguntas Frecuentes</a></li>
-                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#nosotros">Quiénes Somos</a></li>
+                        <li><a href="#contacto">Cómo Comprar</a></li>
+                        <li><a href="#contacto">Envíos y Medios de Pago</a></li>
+                        <li><a href="#contacto">Preguntas Frecuentes</a></li>
                     </ul>
                 </div>
-                
+
                 <div class="footer-col contact-col">
                     <h3>Contacto</h3>
                     <ul>
                         <li><i class="fas fa-map-marker-alt"></i> Córdoba, Argentina</li>
-                        <li><i class="fas fa-phone"></i> +54 9 3512 40-0816</li>
-                        <li><i class="fas fa-envelope"></i> elemporiodescartables@gmail.com</li>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+5493512400816">+54 9 3512 40-0816</a></li>
+                        <li><i class="fas fa-envelope"></i> <a href="mailto:elemporiodescartables@gmail.com">elemporiodescartables@gmail.com</a></li>
                     </ul>
                     <div class="social-links-footer">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="https://facebook.com" target="_blank" rel="noopener"><i class="fab fa-facebook"></i></a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/5493512400816" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <p>&copy; 2026 El Emporio Descartables. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
 
+    <!-- Scripts -->
+    <script src="js/productos.js"></script>
     <script src="js/main.js"></script>
+
+    <!-- Formulario de contacto inline -->
+    <script>
+        document.getElementById('form-contacto').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const msg = document.getElementById('contact-msg').value.trim();
+            if (!name || !email || !msg) {
+                mostrarToast('Por favor completá los campos requeridos', 'warning');
+                return;
+            }
+            mostrarToast('✅ ¡Mensaje enviado! Te responderemos pronto.', 'success');
+            this.reset();
+        });
+    </script>
 </body>
 </html>

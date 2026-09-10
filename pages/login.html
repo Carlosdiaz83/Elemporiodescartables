@@ -452,12 +452,31 @@
     </div>
 
     <script>
+        // ---- Sistema de sesión (compartido con main.js) ----
+        const Auth = {
+            login(proveedor, nombre, avatar) {
+                const user = { proveedor, nombre, avatar, loggedAt: Date.now() };
+                localStorage.setItem('emporio_user', JSON.stringify(user));
+                return user;
+            },
+            isLogged() { return !!localStorage.getItem('emporio_user'); }
+        };
+
+        // Si ya está logueado, redirigir directo
+        if (Auth.isLogged()) {
+            window.location.href = '../index.html';
+        }
+
+        // Nombres simulados según proveedor
+        const NOMBRES = {
+            Google: ['Carlos García', 'Ana Martínez', 'Lucas Pérez', 'María López'],
+            Facebook: ['Roberto Díaz', 'Sofía Torres', 'Javier Ruiz', 'Valentina Gómez']
+        };
+
         function handleLogin(btn, proveedor) {
-            // Agregar estado loading al botón
             btn.classList.add('loading');
             btn.disabled = true;
 
-            // Mostrar toast
             const toast = document.getElementById('toast');
             const toastMsg = document.getElementById('toast-msg');
             const toastIco = document.getElementById('toast-ico');
@@ -474,9 +493,14 @@
             toastMsg.textContent = `Conectando con ${proveedor}...`;
             toast.classList.add('show');
 
-            // Simular proceso de login
             setTimeout(() => {
-                toastMsg.textContent = `¡Sesión iniciada con ${proveedor}! Redirigiendo...`;
+                // Guardar sesión en localStorage
+                const nombres = NOMBRES[proveedor];
+                const nombre = nombres[Math.floor(Math.random() * nombres.length)];
+                Auth.login(proveedor, nombre, null);
+
+                toastMsg.textContent = `¡Bienvenido/a, ${nombre.split(' ')[0]}! Redirigiendo...`;
+
                 setTimeout(() => {
                     window.location.href = '../index.html';
                 }, 1000);
