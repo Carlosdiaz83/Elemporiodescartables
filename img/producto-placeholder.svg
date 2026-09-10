@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450">
+  <rect width="600" height="450" fill="#F5F0FA"/>
+  <rect x="150" y="90" width="300" height="200" rx="18" fill="#FFFFFF" stroke="#C298E0" stroke-width="3"/>
+  <circle cx="300" cy="165" r="48" fill="#5B3680"/>
+  <text x="300" y="180" text-anchor="middle" font-family="Arial,sans-serif" font-size="44" fill="#FFFFFF">📦</text>
+  <text x="300" y="245" text-anchor="middle" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#3E235A">El Emporio Descartables</text>
+  <text x="300" y="272" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" fill="#7A6A8A">Foto del producto próximamente</text>
+  <rect x="230" y="310" width="140" height="36" rx="18" fill="#5B3680"/>
+  <text x="300" y="334" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" font-weight="bold" fill="#FFFFFF">Córdoba • Argentina</text>
+</svg>

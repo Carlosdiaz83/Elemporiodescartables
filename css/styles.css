@@ -2,15 +2,15 @@
    Variables y Reset
    ========================================================================== */
 :root {
-    /* Paleta de Colores - Logo Violeta */
-    --primary-color: #6c5ce7;       /* Violeta principal */
-    --primary-dark: #4834d4;        /* Violeta oscuro para hovers */
-    --primary-light: #a29bfe;       /* Violeta claro */
-    --secondary-color: #f1f2f6;     /* Gris muy claro para fondos */
-    --text-main: #2d3436;           /* Texto oscuro */
-    --text-muted: #636e72;          /* Texto secundario */
+    /* Paleta de Colores - Logo El Emporio (morado Córdoba) */
+    --primary-color: #5B3680;       /* Violeta principal del logo */
+    --primary-dark: #3E235A;        /* Violeta oscuro para hovers */
+    --primary-light: #C298E0;       /* Lavanda claro del logo */
+    --secondary-color: #F5F0FA;     /* Fondo lila muy claro */
+    --text-main: #2d2436;           /* Texto oscuro */
+    --text-muted: #6f6480;          /* Texto secundario */
     --white: #ffffff;
-    --border-color: #dfe6e9;
+    --border-color: #E6DDF0;
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     --transition: all 0.3s ease;
 }
@@ -461,9 +461,13 @@ ul {
 }
 
 .footer-logo {
-    height: 50px;
+    height: 64px;
+    width: 64px;
+    object-fit: cover;
+    border-radius: 50%;
     margin-bottom: 20px;
-    filter: brightness(0) invert(1); /* Poner logo en blanco temporalmente */
+    background: #fff;
+    padding: 3px;
 }
 
 .footer h3 {
