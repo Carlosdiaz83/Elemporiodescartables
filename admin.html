@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - El Emporio Descartables</title>
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+.admin-bar{position:sticky;top:0;z-index:1000;background:#2A1745;color:#fff;padding:10px 0}
+.admin-bar .container{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.admin-bar button{border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:700}
+.btn-save{background:#C298E0}.btn-view{background:#fff}.btn-out{background:transparent;color:#fff;border:1px solid #fff!important}
+.edit-btn{background:#F5F0FA;border:1px dashed var(--primary-color);color:var(--primary-dark);border-radius:8px;padding:6px 12px;cursor:pointer;font-size:13px;margin:8px 0;display:inline-block}
+.editing{outline:2px dashed var(--primary-color);outline-offset:4px;background:#fff}
+.admin-section{border:1px solid var(--border-color);border-radius:12px;padding:16px;margin:16px 0;background:#fff}
+.admin-prod-row{display:grid;grid-template-columns:56px 1fr 110px 90px 90px 90px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid #eee}
+.admin-prod-row img{width:56px;height:56px;object-fit:cover;border-radius:8px;background:#F5F0FA}
+.admin-prod-row input{padding:8px;border:1px solid var(--border-color);border-radius:6px}
+.admin-prod-row .mini{padding:8px;border:none;border-radius:6px;background:var(--primary-color);color:#fff;cursor:pointer}
+#admin-products{max-height:520px;overflow:auto}
+</style>
+</head>
+<body>
+<div class="admin-bar"><div class="container">
+  <strong><i class="fas fa-shield-alt"></i> MODO ADMIN</strong>
+  <span id="admin-msg" style="flex:1"></span>
+  <button class="btn-save" id="btn-save-all"><i class="fas fa-save"></i> Guardar todo</button>
+  <button class="btn-view" onclick="window.open('index.html','_blank')">Ver sitio</button>
+  <button class="btn-out" id="btn-admin-logout">Salir</button>
+</div></div>
+
+<div class="container">
+  <div class="admin-section">
+    <h3>Logo <button class="edit-btn" data-edit-btn="#a-logo-note"><i class="fas fa-pen"></i> Editar</button></h3>
+    <img class="admin-logo-preview" src="img/logo.jpg" alt="logo" style="width:90px;height:90px;border-radius:50%;object-fit:cover">
+    <p id="a-logo-note">Logo actual: <code>img/logo.jpg</code></p>
+    <input type="file" id="edit-logo-input" accept="image/*">
+  </div>
+
+  <div class="admin-section">
+    <h3>Hero <button class="edit-btn" data-edit-btn="#a-hero-box"><i class="fas fa-pen"></i> Editar</button></h3>
+    <div id="a-hero-box">
+      <h1 id="a-hero-title">VENTA DE DESCARTABLES</h1>
+      <p id="a-hero-sub">¡Tenemos lo que tu Negocio necesita!</p>
+      <p id="a-hero-cta">¡HACÉ TU PEDIDO!</p>
+    </div>
+  </div>
+
+  <div class="admin-section">
+    <h3>Características <button class="edit-btn" data-edit-btn="#a-feat-box"><i class="fas fa-pen"></i> Editar</button></h3>
+    <div id="a-feat-box">
+      <p><strong id="a-feat-1-t">Envíos a todo el país</strong> — <span id="a-feat-1-x">Despachamos tu pedido rápido y seguro</span></p>
+      <p><strong id="a-feat-2-t">Venta Minorista</strong> — <span id="a-feat-2-x">Los mejores precios para tu negocio</span></p>
+      <p><strong id="a-feat-3-t">Amplio Catálogo</strong> — <span id="a-feat-3-x">Más de 1400 artículos disponibles</span></p>
+    </div>
+  </div>
+
+  <div class="admin-section">
+    <h3>Productos (precio, nombre, unidad, visible) <button class="edit-btn" onclick="document.getElementById('admin-search').focus()"><i class="fas fa-pen"></i> Editar</button></h3>
+    <input id="admin-search" placeholder="Buscar producto…" style="width:100%;padding:10px;border:1px solid var(--border-color);border-radius:8px;margin-bottom:10px">
+    <div id="admin-products"></div>
+    <p style="font-size:13px;color:#666">La imagen se cambia reemplazando el archivo en <code>img/productos/</code> y actualizando <code>js/productos.js</code>. El botón Guardar de cada fila deja vista previa local.</p>
+  </div>
+
+  <div class="admin-section">
+    <h3>Contacto <button class="edit-btn" data-edit-btn="#a-contact-box"><i class="fas fa-pen"></i> Editar</button></h3>
+    <div id="a-contact-box">
+      <p>Tel: <span id="a-contact-phone">+54 9 3512 40-0816</span></p>
+      <p>Email: <span id="a-contact-email">elemporiodescartables@gmail.com</span></p>
+      <p>Dirección: <span id="a-contact-addr">Córdoba, Argentina</span></p>
+      <p>Horario: <span id="a-contact-hours">Lunes a Viernes: 9:00 a 15:00 hs y 17:00 a 21:00 hs</span></p>
+    </div>
+  </div>
+
+  <div class="admin-section">
+    <h3>Pie de página <button class="edit-btn" data-edit-btn="#a-footer-note"><i class="fas fa-pen"></i> Editar</button></h3>
+    <p id="a-footer-note">© 2026 El Emporio Descartables. Todos los derechos reservados.</p>
+  </div>
+</div>
+
+<script src="js/productos.js"></script>
+<script src="js/admin-auth.js"></script>
+<script src="js/admin-editor.js"></script>
+</body>
+</html>

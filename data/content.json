@@ -1,0 +1,19 @@
+{
+  "hero": {
+    "title": "VENTA DE DESCARTABLES",
+    "subtitle": "¡Tenemos lo que tu Negocio necesita!",
+    "cta": "¡HACÉ TU PEDIDO!"
+  },
+  "features": [
+    { "icon": "fas fa-truck", "title": "Envíos a todo el país", "text": "Despachamos tu pedido rápido y seguro" },
+    { "icon": "fas fa-tags", "title": "Venta Minorista", "text": "Los mejores precios para tu negocio" },
+    { "icon": "fas fa-boxes", "title": "Amplio Catálogo", "text": "Más de 1400 artículos disponibles" }
+  ],
+  "contact": {
+    "phone": "+54 9 3512 40-0816",
+    "email": "elemporiodescartables@gmail.com",
+    "address": "Córdoba, Argentina",
+    "hours": "Lunes a Viernes: 9:00 a 15:00 hs y 17:00 a 21:00 hs"
+  },
+  "footerNote": "© 2026 El Emporio Descartables. Todos los derechos reservados."
+}

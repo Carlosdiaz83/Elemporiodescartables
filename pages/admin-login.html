@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acceso Administrador - El Emporio Descartables</title>
+<link rel="stylesheet" href="../css/styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+.login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;background:linear-gradient(135deg,#2A1745 0%,#3E235A 40%,#5B3680 70%,#C298E0 100%)}
+.login-card{background:#fff;border-radius:20px;padding:40px;width:100%;max-width:440px;box-shadow:0 25px 50px rgba(0,0,0,.3);text-align:center}
+.login-card img{width:90px;height:90px;object-fit:cover;border-radius:50%;margin-bottom:12px}
+.step{display:none}.step.active{display:block}
+input{width:100%;padding:12px 14px;border:2px solid var(--border-color);border-radius:8px;font-size:16px;margin:8px 0}
+button.primary{width:100%;padding:12px;background:var(--primary-color);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
+button.primary:hover{background:var(--primary-dark)}
+.hint{font-size:13px;color:var(--text-muted);margin-top:12px}
+.badge{display:inline-block;background:#F5F0FA;border:1px solid var(--primary-light);color:var(--primary-dark);border-radius:20px;padding:4px 12px;font-size:12px;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="login-page">
+  <div class="login-card">
+    <img src="../img/logo.jpg" alt="El Emporio">
+    <div class="badge"><i class="fas fa-shield-alt"></i> Acceso administrador</div>
+    <h2>Panel de administración</h2>
+    <p class="hint">Paso 1: teléfono &nbsp;→&nbsp; Paso 2: cuenta de Gmail autorizada</p>
+
+    <div class="step active" id="step1">
+      <input id="admin-phone" type="tel" placeholder="+54 9 351 ...">
+      <button class="primary" id="btn-step1">Continuar</button>
+      <p class="hint">Solo el teléfono configurado en el servidor puede seguir.</p>
+    </div>
+
+    <div class="step" id="step2">
+      <p class="hint">Teléfono: <strong id="phone-echo"></strong> <a href="#" id="edit-phone">(cambiar)</a></p>
+      <div id="g_id_onload"
+           data-auto_prompt="false"></div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+           data-text="continue_with" data-shape="rectangular" data-logo_alignment="left"></div>
+      <div style="margin:14px 0;color:#999;font-size:13px">— o modo desarrollo local —</div>
+      <input id="admin-email-dev" type="email" placeholder="tu-email@gmail.com (solo dev local)">
+      <button class="primary" id="btn-dev">Validar email (dev)</button>
+      <p class="hint">En producción se usa el botón de Google. El servidor valida email + teléfono contra las variables de entorno.</p>
+    </div>
+
+    <p class="hint" id="login-msg"></p>
+    <p class="hint"><a href="../index.html">← Volver al inicio</a></p>
+  </div>
+</div>
+
+<script src="../js/admin-auth.js"></script>
+<script>
+const msg = (t) => document.getElementById('login-msg').textContent = t || '';
+// GOOGLE_CLIENT_ID se inyecta en producción; en local Netlify Dev lo sirve desde .env
+fetch('/.netlify/functions/content-get').catch(()=>{});
+const CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
+if (CLIENT_ID) document.getElementById('g_id_onload').setAttribute('data-client_id', CLIENT_ID);
+
+document.getElementById('btn-step1').onclick = () => {
+  const phone = document.getElementById('admin-phone').value.trim();
+  if (phone.replace(/\D/g,'').length < 8) { msg('Ingresá un teléfono válido.'); return; }
+  AdminAuth.setPhone(phone);
+  document.getElementById('phone-echo').textContent = phone;
+  document.getElementById('step1').classList.remove('active');
+  document.getElementById('step2').classList.add('active');
+  msg('');
+};
+document.getElementById('edit-phone').onclick = (e) => {
+  e.preventDefault();
+  document.getElementById('step2').classList.remove('active');
+  document.getElementById('step1').classList.add('active');
+};
+
+// Callback global de Google Identity Services
+window.handleGoogleCredential = async (resp) => {
+  msg('Verificando en el servidor…');
+  try {
+    const data = await AdminAuth.validate({ phone: AdminAuth.getPhone(), idToken: resp.credential });
+    if (data.ok && data.role === 'admin' && data.token) {
+      AdminAuth.setToken(data.token);
+      window.location.href = '../admin.html';
+    } else if (data.ok && data.role === 'customer') {
+      msg('Esta cuenta no tiene rol administrador.');
+    } else { msg(data.error || 'Acceso denegado.'); }
+  } catch { msg('Error de conexión con el servidor.'); }
+};
+
+// Conectar callback al botón de Google cuando cargue GIS
+const iv = setInterval(() => {
+  if (window.google && window.google.accounts) {
+    clearInterval(iv);
+    try {
+      google.accounts.id.initialize({ client_id: CLIENT_ID, callback: window.handleGoogleCredential });
+      google.accounts.id.renderButton(document.querySelector('.g_id_signin'), { theme: 'outline', size: 'large' });
+    } catch {}
+  }
+}, 500);
+
+// Fallback dev (sin OAuth): solo útil en local con las env cargadas
+document.getElementById('btn-dev').onclick = async () => {
+  const email = document.getElementById('admin-email-dev').value.trim();
+  if (!email) { msg('Ingresá tu email de prueba.'); return; }
+  msg('Verificando en el servidor…');
+  try {
+    const data = await AdminAuth.validate({ phone: AdminAuth.getPhone(), email });
+    if (data.ok && data.role === 'admin' && data.token) {
+      AdminAuth.setToken(data.token);
+      window.location.href = '../admin.html';
+    } else if (data.ok && data.role === 'customer') { msg('Sin rol administrador.'); }
+    else { msg(data.error || 'Acceso denegado.'); }
+  } catch { msg('Error de conexión. ¿Corren las functions? Probá con: netlify dev'); }
+};
+</script>
+</body>
+</html>
