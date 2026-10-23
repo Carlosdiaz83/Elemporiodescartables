@@ -5,8 +5,39 @@
 // ============================================================
 
 const Auth = {
-    login(proveedor, nombre, avatar) {
-        const user = { proveedor, nombre, avatar, loggedAt: Date.now() };
+    normEmail(e) {
+        return String(e || '').trim().toLowerCase();
+    },
+    normPhone(p) {
+        return String(p || '').replace(/\D/g, '').slice(-10);
+    },
+    getRegisteredUsers() {
+        try {
+            return JSON.parse(localStorage.getItem('emporio_users') || '[]');
+        } catch { return []; }
+    },
+    registerUser({ nombre, email, phone }) {
+        const users = this.getRegisteredUsers();
+        const normE = this.normEmail(email);
+        const normP = this.normPhone(phone);
+        const existingIdx = users.findIndex(u => this.normEmail(u.email) === normE);
+        const userData = { nombre: (nombre || '').trim(), email: normE, phone: normP, createdAt: Date.now() };
+        if (existingIdx >= 0) {
+            users[existingIdx] = userData;
+        } else {
+            users.push(userData);
+        }
+        localStorage.setItem('emporio_users', JSON.stringify(users));
+        return this.login('registro', userData.nombre, null, userData);
+    },
+    findRegisteredUser(email, phone) {
+        const users = this.getRegisteredUsers();
+        const normE = this.normEmail(email);
+        const normP = this.normPhone(phone);
+        return users.find(u => this.normEmail(u.email) === normE && this.normPhone(u.phone) === normP);
+    },
+    login(proveedor, nombre, avatar, extra = {}) {
+        const user = { proveedor, nombre, avatar, ...extra, loggedAt: Date.now() };
         localStorage.setItem('emporio_user', JSON.stringify(user));
         return user;
     },

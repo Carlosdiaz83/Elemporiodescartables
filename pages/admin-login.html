@@ -6,112 +6,105 @@
 <title>Acceso Administrador - El Emporio Descartables</title>
 <link rel="stylesheet" href="../css/styles.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 .login-page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 20px;background:linear-gradient(135deg,#2A1745 0%,#3E235A 40%,#5B3680 70%,#C298E0 100%)}
 .login-card{background:#fff;border-radius:20px;padding:40px;width:100%;max-width:440px;box-shadow:0 25px 50px rgba(0,0,0,.3);text-align:center}
 .login-card img{width:90px;height:90px;object-fit:cover;border-radius:50%;margin-bottom:12px}
-.step{display:none}.step.active{display:block}
-input{width:100%;padding:12px 14px;border:2px solid var(--border-color);border-radius:8px;font-size:16px;margin:8px 0}
-button.primary{width:100%;padding:12px;background:var(--primary-color);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
-button.primary:hover{background:var(--primary-dark)}
-.hint{font-size:13px;color:var(--text-muted);margin-top:12px}
-.badge{display:inline-block;background:#F5F0FA;border:1px solid var(--primary-light);color:var(--primary-dark);border-radius:20px;padding:4px 12px;font-size:12px;margin-bottom:12px}
+.form-group{text-align:left;margin-bottom:16px}
+.form-group label{display:block;font-size:14px;font-weight:600;color:var(--text-color,#333);margin-bottom:6px}
+input{width:100%;padding:12px 14px;border:2px solid var(--border-color,#e2e8f0);border-radius:8px;font-size:15px;box-sizing:border-box;transition:border-color .2s}
+input:focus{outline:none;border-color:var(--primary-color,#5B3680)}
+button.primary{width:100%;padding:14px;background:var(--primary-color,#5B3680);color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;margin-top:10px;transition:background .2s}
+button.primary:hover{background:var(--primary-dark,#3E235A)}
+button.primary:disabled{opacity:0.7;cursor:not-allowed}
+.hint{font-size:13px;color:var(--text-muted,#666);margin-top:14px}
+.badge{display:inline-block;background:#F5F0FA;border:1px solid var(--primary-light,#C298E0);color:var(--primary-dark,#3E235A);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:600;margin-bottom:12px}
+.alert-msg{margin-top:15px;padding:10px 14px;border-radius:8px;font-size:14px;display:none}
+.alert-msg.error{display:block;background:#FEE2E2;color:#991B1B;border:1px solid #F87171}
+.alert-msg.loading{display:block;background:#E0E7FF;color:#3730A3;border:1px solid #A5B4FC}
+.alert-msg.success{display:block;background:#DCFCE7;color:#166534;border:1px solid #86EFAC}
 </style>
 </head>
 <body>
 <div class="login-page">
   <div class="login-card">
     <img src="../img/logo.jpg" alt="El Emporio">
-    <div class="badge"><i class="fas fa-shield-alt"></i> Acceso administrador</div>
-    <h2>Panel de administración</h2>
-    <p class="hint">Paso 1: teléfono &nbsp;→&nbsp; Paso 2: cuenta de Gmail autorizada</p>
+    <div><span class="badge"><i class="fas fa-shield-alt"></i> Panel de Administración</span></div>
+    <h2 style="margin-bottom:6px;color:#2A1745">Acceso Administrador</h2>
+    <p class="hint" style="margin-top:0;margin-bottom:20px">Ingresá tu correo electrónico y teléfono autorizados</p>
 
-    <div class="step active" id="step1">
-      <input id="admin-phone" type="tel" placeholder="+54 9 351 ...">
-      <button class="primary" id="btn-step1">Continuar</button>
-      <p class="hint">Solo el teléfono configurado en el servidor puede seguir.</p>
-    </div>
+    <form id="admin-login-form">
+      <div class="form-group">
+        <label for="admin-email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+        <input id="admin-email" type="email" placeholder="ejemplo@gmail.com" required autocomplete="email">
+      </div>
 
-    <div class="step" id="step2">
-      <p class="hint">Teléfono: <strong id="phone-echo"></strong> <a href="#" id="edit-phone">(cambiar)</a></p>
-      <div id="g_id_onload"
-           data-auto_prompt="false"></div>
-      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
-           data-text="continue_with" data-shape="rectangular" data-logo_alignment="left"></div>
-      <div style="margin:14px 0;color:#999;font-size:13px">— o modo desarrollo local —</div>
-      <input id="admin-email-dev" type="email" placeholder="tu-email@gmail.com (solo dev local)">
-      <button class="primary" id="btn-dev">Validar email (dev)</button>
-      <p class="hint">En producción se usa el botón de Google. El servidor valida email + teléfono contra las variables de entorno.</p>
-    </div>
+      <div class="form-group">
+        <label for="admin-phone"><i class="fas fa-phone"></i> Teléfono Celular</label>
+        <input id="admin-phone" type="tel" placeholder="Ej: 3511234567 o +54 9 351..." required autocomplete="tel">
+      </div>
 
-    <p class="hint" id="login-msg"></p>
-    <p class="hint"><a href="../index.html">← Volver al inicio</a></p>
+      <button type="submit" class="primary" id="btn-submit">
+        <i class="fas fa-sign-in-alt"></i> Ingresar al Panel
+      </button>
+    </form>
+
+    <div id="login-msg" class="alert-msg"></div>
+
+    <p class="hint"><a href="../index.html" style="color:var(--primary-color,#5B3680);text-decoration:none"><i class="fas fa-arrow-left"></i> Volver a la tienda</a></p>
   </div>
 </div>
 
 <script src="../js/admin-auth.js"></script>
 <script>
-const msg = (t) => document.getElementById('login-msg').textContent = t || '';
-// GOOGLE_CLIENT_ID se inyecta en producción; en local Netlify Dev lo sirve desde .env
-fetch('/.netlify/functions/content-get').catch(()=>{});
-const CLIENT_ID = window.GOOGLE_CLIENT_ID || '';
-if (CLIENT_ID) document.getElementById('g_id_onload').setAttribute('data-client_id', CLIENT_ID);
+const form = document.getElementById('admin-login-form');
+const btnSubmit = document.getElementById('btn-submit');
+const msgBox = document.getElementById('login-msg');
 
-document.getElementById('btn-step1').onclick = () => {
-  const phone = document.getElementById('admin-phone').value.trim();
-  if (phone.replace(/\D/g,'').length < 8) { msg('Ingresá un teléfono válido.'); return; }
-  AdminAuth.setPhone(phone);
-  document.getElementById('phone-echo').textContent = phone;
-  document.getElementById('step1').classList.remove('active');
-  document.getElementById('step2').classList.add('active');
-  msg('');
-};
-document.getElementById('edit-phone').onclick = (e) => {
-  e.preventDefault();
-  document.getElementById('step2').classList.remove('active');
-  document.getElementById('step1').classList.add('active');
-};
-
-// Callback global de Google Identity Services
-window.handleGoogleCredential = async (resp) => {
-  msg('Verificando en el servidor…');
-  try {
-    const data = await AdminAuth.validate({ phone: AdminAuth.getPhone(), idToken: resp.credential });
-    if (data.ok && data.role === 'admin' && data.token) {
-      AdminAuth.setToken(data.token);
-      window.location.href = '../admin.html';
-    } else if (data.ok && data.role === 'customer') {
-      msg('Esta cuenta no tiene rol administrador.');
-    } else { msg(data.error || 'Acceso denegado.'); }
-  } catch { msg('Error de conexión con el servidor.'); }
-};
-
-// Conectar callback al botón de Google cuando cargue GIS
-const iv = setInterval(() => {
-  if (window.google && window.google.accounts) {
-    clearInterval(iv);
-    try {
-      google.accounts.id.initialize({ client_id: CLIENT_ID, callback: window.handleGoogleCredential });
-      google.accounts.id.renderButton(document.querySelector('.g_id_signin'), { theme: 'outline', size: 'large' });
-    } catch {}
+function showMsg(text, type) {
+  if (!text) {
+    msgBox.style.display = 'none';
+    msgBox.className = 'alert-msg';
+    msgBox.textContent = '';
+    return;
   }
-}, 500);
+  msgBox.textContent = text;
+  msgBox.className = 'alert-msg ' + type;
+  msgBox.style.display = 'block';
+}
 
-// Fallback dev (sin OAuth): solo útil en local con las env cargadas
-document.getElementById('btn-dev').onclick = async () => {
-  const email = document.getElementById('admin-email-dev').value.trim();
-  if (!email) { msg('Ingresá tu email de prueba.'); return; }
-  msg('Verificando en el servidor…');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('admin-email').value.trim();
+  const phone = document.getElementById('admin-phone').value.trim();
+
+  if (!email || !phone) {
+    showMsg('Completá ambos campos para continuar.', 'error');
+    return;
+  }
+
+  showMsg('Verificando credenciales en el servidor seguro…', 'loading');
+  btnSubmit.disabled = true;
+
   try {
-    const data = await AdminAuth.validate({ phone: AdminAuth.getPhone(), email });
+    const data = await AdminAuth.validate({ email, phone });
     if (data.ok && data.role === 'admin' && data.token) {
       AdminAuth.setToken(data.token);
-      window.location.href = '../admin.html';
-    } else if (data.ok && data.role === 'customer') { msg('Sin rol administrador.'); }
-    else { msg(data.error || 'Acceso denegado.'); }
-  } catch { msg('Error de conexión. ¿Corren las functions? Probá con: netlify dev'); }
-};
+      AdminAuth.setPhone(phone);
+      AdminAuth.setEmail(email);
+      showMsg('¡Acceso concedido! Redirigiendo al panel…', 'success');
+      setTimeout(() => {
+        window.location.href = '../admin.html';
+      }, 700);
+    } else {
+      showMsg(data.error || 'Correo y teléfono no autorizados para el panel.', 'error');
+      btnSubmit.disabled = false;
+    }
+  } catch (err) {
+    showMsg('Error de conexión con el servidor. Verificá tu conexión a internet.', 'error');
+    btnSubmit.disabled = false;
+  }
+});
 </script>
 </body>
 </html>

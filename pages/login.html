@@ -173,197 +173,156 @@
             text-transform: uppercase;
         }
 
-        /* ---- Botones sociales ---- */
-        .social-buttons {
+        /* ---- Pestañas (Tabs) ---- */
+        .auth-tabs {
             display: flex;
-            flex-direction: column;
-            gap: 14px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            padding: 4px;
+            margin-bottom: 24px;
+            gap: 4px;
         }
 
-        .social-btn {
-            width: 100%;
-            padding: 15px 20px;
+        .tab-btn {
+            flex: 1;
+            padding: 10px 14px;
             border: none;
-            border-radius: 14px;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            font-size: 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .tab-btn.active {
+            background: #ffffff;
+            color: #2A1745;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        /* ---- Formularios ---- */
+        .auth-form {
+            display: none;
+            text-align: left;
+        }
+
+        .auth-form.active {
+            display: block;
+            animation: formFade 0.3s ease;
+        }
+
+        @keyframes formFade {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #ffffff;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            font-size: 15px;
+            color: #333;
+            transition: border-color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #C298E0;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #2A1745;
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            transition: all 0.25s ease;
-            position: relative;
-            overflow: hidden;
+            gap: 10px;
+            margin-top: 20px;
+            transition: all 0.2s ease;
             font-family: 'Inter', sans-serif;
-            letter-spacing: 0.2px;
         }
 
-        .social-btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0);
-            transition: background 0.2s ease;
-        }
-
-        .social-btn:hover::after {
-            background: rgba(255,255,255,0.1);
-        }
-
-        .social-btn:hover {
+        .btn-submit:hover {
+            background: #F5F0FA;
             transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
         }
 
-        .social-btn:active {
-            transform: translateY(0);
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .social-btn i {
-            font-size: 20px;
-        }
-
-        /* Google */
-        .btn-google {
-            background: #ffffff;
-            color: #3c4043;
-        }
-
-        .btn-google i {
-            color: #db4437;
-        }
-
-        .btn-google:hover {
-            background: #f8f9fa;
-        }
-
-        /* Facebook */
-        .btn-facebook {
-            background: #1877f2;
-            color: #ffffff;
-        }
-
-        .btn-facebook:hover {
-            background: #1565e0;
-        }
-
-        /* ---- Términos ---- */
-        .terms-text {
-            margin-top: 32px;
-            color: rgba(255,255,255,0.5);
-            font-size: 12.5px;
-            line-height: 1.6;
-        }
-
-        .terms-text a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-
-        .terms-text a:hover {
-            color: #ffffff;
-        }
-
-        /* ---- Volver al inicio ---- */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 28px;
-            color: rgba(255,255,255,0.65);
-            font-size: 14px;
+        /* ---- Alertas ---- */
+        .alert-box {
+            display: none;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 13.5px;
+            margin-top: 16px;
+            text-align: center;
             font-weight: 500;
+        }
+
+        .alert-box.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.3);
+            border: 1px solid rgba(239, 68, 68, 0.6);
+            color: #fff;
+        }
+
+        .alert-box.success {
+            display: block;
+            background: rgba(34, 197, 94, 0.3);
+            border: 1px solid rgba(34, 197, 94, 0.6);
+            color: #fff;
+        }
+
+        .alert-box.loading {
+            display: block;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+        }
+
+        .admin-link {
+            display: block;
+            margin-top: 14px;
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 12.5px;
+            text-decoration: none;
             transition: color 0.2s;
         }
 
-        .back-link:hover {
+        .admin-link:hover {
             color: #ffffff;
-        }
-
-        .back-link i {
-            font-size: 13px;
-        }
-
-        /* ---- Badge de seguridad ---- */
-        .security-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.15);
-            border-radius: 30px;
-            padding: 6px 14px;
-            margin-bottom: 28px;
-            color: rgba(255,255,255,0.8);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .security-badge i {
-            color: #6dff9f;
-            font-size: 11px;
-        }
-
-        /* ---- Toast de confirmación ---- */
-        .toast {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(-80px);
-            background: rgba(30, 30, 30, 0.95);
-            backdrop-filter: blur(12px);
-            color: white;
-            padding: 14px 24px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            z-index: 9999;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
-        }
-
-        .toast-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            flex-shrink: 0;
-        }
-
-        .toast-google .toast-icon { background: #db4437; }
-        .toast-facebook .toast-icon { background: #1877f2; }
-
-        /* ---- Spinner dentro del botón ---- */
-        .social-btn .btn-spinner {
-            display: none;
-            width: 18px;
-            height: 18px;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-top-color: currentColor;
-            border-radius: 50%;
-            animation: spin 0.7s linear infinite;
-        }
-
-        .social-btn.loading .btn-icon,
-        .social-btn.loading .btn-text { opacity: 0; }
-        .social-btn.loading .btn-spinner { display: block; position: absolute; }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+            text-decoration: underline;
         }
 
         /* ---- Responsive ---- */
@@ -377,14 +336,6 @@
     </style>
 </head>
 <body>
-
-    <!-- Toast de confirmación -->
-    <div class="toast" id="toast">
-        <div class="toast-icon">
-            <i class="fab fa-google" id="toast-ico"></i>
-        </div>
-        <span id="toast-msg">Conectando con Google...</span>
-    </div>
 
     <div class="login-page">
         <!-- Círculos decorativos -->
@@ -401,112 +352,177 @@
                     <img src="../img/logo.jpg" alt="El Emporio Descartables">
                 </div>
 
-                <!-- Badge seguridad -->
-                <div class="security-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    Acceso seguro y privado
-                </div>
-
                 <!-- Título -->
                 <h1 class="card-title">¡Bienvenido!</h1>
                 <p class="card-subtitle">
-                    Ingresá con tu cuenta de Google o Facebook para<br>
-                    acceder a tus pedidos y favoritos.
+                    Creá tu usuario o ingresá con tus datos para ver precios y armar tu pedido.
                 </p>
 
-                <!-- Divisor -->
-                <div class="divider">
-                    <span>Elegí tu método</span>
+                <!-- Pestañas -->
+                <div class="auth-tabs">
+                    <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Iniciar Sesión</button>
+                    <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Crear Usuario</button>
                 </div>
 
-                <!-- Botones sociales -->
-                <div class="social-buttons">
-                    <button class="social-btn btn-google" id="btn-google" onclick="handleLogin(this, 'Google')">
-                        <span class="btn-spinner"></span>
-                        <i class="fab fa-google btn-icon"></i>
-                        <span class="btn-text">Continuar con Google</span>
+                <!-- Formulario Iniciar Sesión -->
+                <form id="form-login" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                        <input type="email" id="login-email" placeholder="ejemplo@gmail.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-phone"><i class="fas fa-phone"></i> Teléfono Celular</label>
+                        <input type="tel" id="login-phone" placeholder="Ej: 3511234567 o +54 9 351..." required autocomplete="tel">
+                    </div>
+                    <button type="submit" class="btn-submit" id="btn-login-submit">
+                        <i class="fas fa-sign-in-alt"></i> Ingresar a mi cuenta
                     </button>
+                </form>
 
-                    <button class="social-btn btn-facebook" id="btn-facebook" onclick="handleLogin(this, 'Facebook')">
-                        <span class="btn-spinner"></span>
-                        <i class="fab fa-facebook-f btn-icon"></i>
-                        <span class="btn-text">Continuar con Facebook</span>
+                <!-- Formulario Crear Usuario -->
+                <form id="form-register" class="auth-form">
+                    <div class="form-group">
+                        <label for="reg-nombre"><i class="fas fa-user"></i> Nombre y Apellido</label>
+                        <input type="text" id="reg-nombre" placeholder="Tu nombre completo" required autocomplete="name">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email"><i class="fas fa-envelope"></i> Correo Electrónico</label>
+                        <input type="email" id="reg-email" placeholder="ejemplo@gmail.com" required autocomplete="email">
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-phone"><i class="fas fa-phone"></i> Teléfono Celular</label>
+                        <input type="tel" id="reg-phone" placeholder="Ej: 3511234567" required autocomplete="tel">
+                    </div>
+                    <button type="submit" class="btn-submit" id="btn-reg-submit">
+                        <i class="fas fa-user-plus"></i> Crear mi cuenta
                     </button>
+                </form>
+
+                <div id="alert-box" class="alert-box"></div>
+
+                <div>
+                    <a href="../index.html" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Volver al inicio
+                    </a>
                 </div>
 
-                <!-- Términos -->
-                <p class="terms-text">
-                    Al ingresar, aceptás nuestros
-                    <a href="#">Términos y Condiciones</a> y la
-                    <a href="#">Política de Privacidad</a>.
-                </p>
-
-                <!-- Volver -->
-                <a href="../index.html" class="back-link">
-                    <i class="fas fa-arrow-left"></i>
-                    Volver al inicio
-                </a>
+                <div>
+                    <a href="admin-login.html" class="admin-link">
+                        <i class="fas fa-shield-alt"></i> ¿Sos administrador? Acceso al panel
+                    </a>
+                </div>
 
             </div>
         </div>
     </div>
 
+    <script src="../js/admin-auth.js"></script>
+    <script src="../js/main.js"></script>
     <script>
-        // ---- Sistema de sesión (compartido con main.js) ----
-        const Auth = {
-            login(proveedor, nombre, avatar) {
-                const user = { proveedor, nombre, avatar, loggedAt: Date.now() };
-                localStorage.setItem('emporio_user', JSON.stringify(user));
-                return user;
-            },
-            isLogged() { return !!localStorage.getItem('emporio_user'); }
-        };
-
         // Si ya está logueado, redirigir directo
         if (Auth.isLogged()) {
             window.location.href = '../index.html';
         }
 
-        // Nombres simulados según proveedor
-        const NOMBRES = {
-            Google: ['Carlos García', 'Ana Martínez', 'Lucas Pérez', 'María López'],
-            Facebook: ['Roberto Díaz', 'Sofía Torres', 'Javier Ruiz', 'Valentina Gómez']
-        };
+        const alertBox = document.getElementById('alert-box');
 
-        function handleLogin(btn, proveedor) {
-            btn.classList.add('loading');
-            btn.disabled = true;
+        function showAlert(text, type) {
+            if (!text) {
+                alertBox.style.display = 'none';
+                alertBox.className = 'alert-box';
+                alertBox.textContent = '';
+                return;
+            }
+            alertBox.textContent = text;
+            alertBox.className = 'alert-box ' + type;
+            alertBox.style.display = 'block';
+        }
 
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-msg');
-            const toastIco = document.getElementById('toast-ico');
-
-            toast.className = 'toast';
-            if (proveedor === 'Google') {
-                toast.classList.add('toast-google');
-                toastIco.className = 'fab fa-google';
+        function switchTab(tab) {
+            showAlert('', '');
+            if (tab === 'login') {
+                document.getElementById('tab-login').classList.add('active');
+                document.getElementById('tab-register').classList.remove('active');
+                document.getElementById('form-login').classList.add('active');
+                document.getElementById('form-register').classList.remove('active');
             } else {
-                toast.classList.add('toast-facebook');
-                toastIco.className = 'fab fa-facebook-f';
+                document.getElementById('tab-register').classList.add('active');
+                document.getElementById('tab-login').classList.remove('active');
+                document.getElementById('form-register').classList.add('active');
+                document.getElementById('form-login').classList.remove('active');
+            }
+        }
+
+        // Manejar Login
+        document.getElementById('form-login').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value.trim();
+            const phone = document.getElementById('login-phone').value.trim();
+            const btn = document.getElementById('btn-login-submit');
+
+            if (!email || !phone) {
+                showAlert('Completá ambos campos para continuar.', 'error');
+                return;
             }
 
-            toastMsg.textContent = `Conectando con ${proveedor}...`;
-            toast.classList.add('show');
+            showAlert('Validando credenciales…', 'loading');
+            btn.disabled = true;
 
+            // 1. Primero consultar al backend seguro si coincide con las credenciales de administrador
+            try {
+                const adminResp = await AdminAuth.validate({ email, phone });
+                if (adminResp.ok && adminResp.role === 'admin' && adminResp.token) {
+                    AdminAuth.setToken(adminResp.token);
+                    AdminAuth.setPhone(phone);
+                    AdminAuth.setEmail(email);
+                    Auth.login('admin', 'Administrador', null, { email, phone });
+                    showAlert('¡Bienvenido Administrador! Redirigiendo al panel…', 'success');
+                    setTimeout(() => window.location.href = '../admin.html', 800);
+                    return;
+                }
+            } catch (err) {
+                // Si la función falla o no hay conexión, continuamos con la validación de cliente
+            }
+
+            // 2. Validar contra usuarios clientes registrados
+            const matchedUser = Auth.findRegisteredUser(email, phone);
+            if (matchedUser) {
+                Auth.login('local', matchedUser.nombre, null, matchedUser);
+                showAlert(`¡Hola, ${matchedUser.nombre.split(' ')[0]}! Redirigiendo a la tienda…`, 'success');
+                setTimeout(() => window.location.href = '../index.html', 800);
+            } else {
+                showAlert('El correo y teléfono no coinciden o aún no estás registrado. Creá tu cuenta en la pestaña "Crear Usuario".', 'error');
+                btn.disabled = false;
+            }
+        });
+
+        // Manejar Registro
+        document.getElementById('form-register').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nombre = document.getElementById('reg-nombre').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const btn = document.getElementById('btn-reg-submit');
+
+            if (!nombre || !email || !phone) {
+                showAlert('Por favor completá todos los campos.', 'error');
+                return;
+            }
+
+            if (phone.replace(/\D/g, '').length < 8) {
+                showAlert('Ingresá un número de teléfono válido (mínimo 8 dígitos).', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            showAlert('Creando tu cuenta…', 'loading');
+
+            const newUser = Auth.registerUser({ nombre, email, phone });
+            showAlert(`¡Cuenta creada con éxito! Bienvenido/a, ${nombre.split(' ')[0]}. Redirigiendo…`, 'success');
             setTimeout(() => {
-                // Guardar sesión en localStorage
-                const nombres = NOMBRES[proveedor];
-                const nombre = nombres[Math.floor(Math.random() * nombres.length)];
-                Auth.login(proveedor, nombre, null);
-
-                toastMsg.textContent = `¡Bienvenido/a, ${nombre.split(' ')[0]}! Redirigiendo...`;
-
-                setTimeout(() => {
-                    window.location.href = '../index.html';
-                }, 1000);
-            }, 2000);
-        }
+                window.location.href = '../index.html';
+            }, 900);
+        });
     </script>
-
 </body>
 </html>
