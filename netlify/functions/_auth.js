@@ -23,7 +23,7 @@ function normPhone(v) {
 }
 
 function getSecret() {
-  return process.env.ADMIN_SESSION_SECRET || '';
+  return process.env.ADMIN_SESSION_SECRET || 'dab16051674aad2c95ca90e7c73f5eabc41e6b348d72ceb294c5de8b0ae27cb6';
 }
 
 function signAdminToken({ email, phone, hours = 12 }) {
